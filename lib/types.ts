@@ -28,6 +28,8 @@ export interface Flight {
   total_price: number;
   currency: string;
   link?: string;
+  flight_name?: string;
+  created_at: string;
   segments: FlightSegment[];
 }
 

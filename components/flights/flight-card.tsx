@@ -19,8 +19,25 @@ export function FlightCard({ flight }: FlightCardProps) {
     });
   };
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
   const formatAirportCode = (code: string) => {
     return code.toUpperCase();
+  };
+
+  const getFlightTitle = () => {
+    if (flight.flight_name) {
+      return flight.flight_name;
+    }
+    if (firstSegment && lastSegment) {
+      return `${formatAirportCode(firstSegment.departure_airport)} → ${formatAirportCode(lastSegment.arrival_airport)}`;
+    }
+    return 'Flight Details';
   };
 
   // If no segments, show basic flight info
@@ -30,7 +47,7 @@ export function FlightCard({ flight }: FlightCardProps) {
         <CardHeader>
           <div className="flex justify-between items-start">
             <CardTitle className="text-lg">
-              Flight Details
+              {getFlightTitle()}
             </CardTitle>
             <div className="text-right">
               <div className="text-lg font-semibold">
@@ -43,9 +60,16 @@ export function FlightCard({ flight }: FlightCardProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-600">
-            Flight information is being processed...
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-gray-600">
+              Flight information is being processed...
+            </p>
+            {flight.created_at && (
+              <p className="text-xs text-gray-500">
+                Added {formatDate(flight.created_at)}
+              </p>
+            )}
+          </div>
           {flight.link && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <a 
@@ -67,9 +91,16 @@ export function FlightCard({ flight }: FlightCardProps) {
     <Card>
       <CardHeader>
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">
-            {formatAirportCode(firstSegment.departure_airport)} → {formatAirportCode(lastSegment.arrival_airport)}
-          </CardTitle>
+          <div>
+            <CardTitle className="text-lg">
+              {getFlightTitle()}
+            </CardTitle>
+            {flight.created_at && (
+              <p className="text-xs text-gray-500 mt-1">
+                Added {formatDate(flight.created_at)}
+              </p>
+            )}
+          </div>
           <div className="text-right">
             <div className="text-lg font-semibold">
               {formatCurrency(flight.total_price, flight.currency)}
