@@ -1,12 +1,10 @@
 import { 
-  FlightsResponse,
-  LodgesResponse,
-  PeopleResponse,
   TripsResponse,
   CompleteTripResponse,
   AddFlightData,
   AddLodgeData,
   AddPersonData,
+  CreateTripData,
   ApiError
 } from './types';
 import { supabase } from './supabase';
@@ -61,10 +59,10 @@ class ApiClient {
     }
   }
 
-  // Trip endpoints - Hybrid approach: Supabase for trip IDs, backend for data
+  // Trip endpoints - Use backend API exclusively
   async getTrips(): Promise<TripsResponse> {
     try {
-      // Get current user's trip IDs from Supabase
+      // Get current user ID from Supabase auth
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       
       if (userError) {
@@ -75,24 +73,18 @@ class ApiClient {
         throw new Error('User not authenticated');
       }
 
-      // Get trip IDs from Supabase
-      const { data: trips, error } = await supabase
-        .from('trips')
-        .select('id, title, created_at, host_id')
-        .eq('host_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return {
-        status: 'success',
-        trips: trips || []
-      };
+      // Use backend API to get trips by host_id
+      return this.request<TripsResponse>(`/api/trips/host/${user.id}`);
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : 'Failed to fetch trips');
     }
+  }
+
+  async createTrip(data: CreateTripData): Promise<{ id: string; host_id: string; title: string; created_at: string }> {
+    return this.request('/api/trips', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   }
 
   async getTrip(tripId: string): Promise<CompleteTripResponse> {
@@ -101,11 +93,6 @@ class ApiClient {
   }
 
   // Flight endpoints
-  async getFlights(tripId?: string): Promise<FlightsResponse> {
-    const endpoint = tripId ? `/api/flights?trip_id=${tripId}` : '/api/flights';
-    return this.request<FlightsResponse>(endpoint);
-  }
-
   async addFlight(data: AddFlightData): Promise<{ status: string; inserted_flight_ids: string[] }> {
     return this.request('/api/parse_and_insert_flight', {
       method: 'POST',
@@ -114,11 +101,6 @@ class ApiClient {
   }
 
   // Lodge endpoints
-  async getLodges(tripId?: string): Promise<LodgesResponse> {
-    const endpoint = tripId ? `/api/lodges?trip_id=${tripId}` : '/api/lodges';
-    return this.request<LodgesResponse>(endpoint);
-  }
-
   async addLodge(data: AddLodgeData): Promise<{ status: string; inserted_lodge_ids: string[] }> {
     return this.request('/api/parse_and_insert_lodge', {
       method: 'POST',
@@ -127,11 +109,6 @@ class ApiClient {
   }
 
   // People endpoints
-  async getPeople(tripId?: string): Promise<PeopleResponse> {
-    const endpoint = tripId ? `/api/people?trip_id=${tripId}` : '/api/people';
-    return this.request<PeopleResponse>(endpoint);
-  }
-
   async addPerson(data: AddPersonData): Promise<{ status: string; person_id: string; message: string }> {
     return this.request('/api/join', {
       method: 'POST',
@@ -159,7 +136,7 @@ class ApiClient {
       }
 
       // Try to list tables by attempting a simple query
-      const { data: tables, error: tableError } = await supabase
+      const { error: tableError } = await supabase
         .from('trips')
         .select('count')
         .limit(1);

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
-import { AddFlightData, AddLodgeData, AddPersonData } from '@/lib/types';
+import { AddFlightData, AddLodgeData, AddPersonData, CreateTripData } from '@/lib/types';
 
 // Hook to get all trips
 export function useTrips() {
@@ -8,6 +8,19 @@ export function useTrips() {
     queryKey: ['trips'],
     queryFn: () => apiClient.getTrips(),
     staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// Hook to create a new trip
+export function useCreateTrip() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (data: CreateTripData) => apiClient.createTrip(data),
+    onSuccess: () => {
+      // Invalidate and refetch trips list
+      queryClient.invalidateQueries({ queryKey: ['trips'] });
+    },
   });
 }
 
@@ -21,35 +34,8 @@ export function useTrip(tripId: string) {
   });
 }
 
-// Hook to get flights for a trip
-export function useFlights(tripId: string) {
-  return useQuery({
-    queryKey: ['flights', tripId],
-    queryFn: () => apiClient.getFlights(tripId),
-    enabled: !!tripId,
-    staleTime: 2 * 60 * 1000,
-  });
-}
-
-// Hook to get lodges for a trip
-export function useLodges(tripId: string) {
-  return useQuery({
-    queryKey: ['lodges', tripId],
-    queryFn: () => apiClient.getLodges(tripId),
-    enabled: !!tripId,
-    staleTime: 2 * 60 * 1000,
-  });
-}
-
-// Hook to get people for a trip
-export function usePeople(tripId: string) {
-  return useQuery({
-    queryKey: ['people', tripId],
-    queryFn: () => apiClient.getPeople(tripId),
-    enabled: !!tripId,
-    staleTime: 2 * 60 * 1000,
-  });
-}
+// Note: Individual data hooks removed - use useTrip() for complete trip data
+// This simplifies the data flow and reduces API calls
 
 // Hook to add a flight to a trip
 export function useAddFlight() {

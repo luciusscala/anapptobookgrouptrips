@@ -2,8 +2,8 @@
 
 export interface Trip {
   id: string;
-  title: string;  // Changed from 'name' to 'title' to match Supabase schema
-  host_id: string;  // Added host_id field from Supabase schema
+  title: string;
+  host_id: string;
   created_at: string;
 }
 
@@ -85,6 +85,11 @@ export interface CompleteTripResponse extends ApiResponse<CompleteTripData> {
 }
 
 // Form data types
+export interface CreateTripData {
+  host_id: string;
+  title: string;
+}
+
 export interface AddFlightData {
   link: string;
   trip_id: string;

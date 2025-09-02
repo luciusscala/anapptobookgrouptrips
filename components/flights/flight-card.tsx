@@ -7,10 +7,6 @@ interface FlightCardProps {
 }
 
 export function FlightCard({ flight }: FlightCardProps) {
-  // Debug logging to see actual flight data structure
-  console.log('Flight data received:', flight);
-  console.log('Flight segments:', flight.segments);
-  
   // Add null checks and fallbacks for segments
   const segments = flight.segments || [];
   const firstSegment = segments[0];

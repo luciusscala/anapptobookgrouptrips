@@ -7,36 +7,37 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ProtectedRoute } from '@/components/auth/protected-route';
+import { useCreateTrip } from '@/hooks/useTrip';
+import { supabase } from '@/lib/supabase';
 
 export default function NewTripPage() {
   const [tripTitle, setTripTitle] = useState('');
-  const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
+  const createTrip = useCreateTrip();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!tripTitle.trim()) return;
 
-    setIsCreating(true);
     try {
-      // For now, we'll create a simple trip object
-      // In a real implementation, you'd call an API endpoint to create a trip
-      const newTrip = {
-        id: crypto.randomUUID(),
-        title: tripTitle.trim(),
-        created_at: new Date().toISOString(),
-      };
+      // Get current user ID from Supabase auth
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (userError || !user) {
+        throw new Error('User not authenticated');
+      }
+
+      // Create trip using backend API
+      const newTrip = await createTrip.mutateAsync({
+        host_id: user.id,
+        title: tripTitle.trim(),
+      });
       
       // Redirect to the new trip
       router.push(`/trips/${newTrip.id}`);
     } catch (error) {
       console.error('Failed to create trip:', error);
       // You could add error handling here
-    } finally {
-      setIsCreating(false);
     }
   };
 
@@ -77,10 +78,10 @@ export default function NewTripPage() {
                 <div className="flex gap-4">
                   <Button 
                     type="submit" 
-                    disabled={isCreating || !tripTitle.trim()}
+                    disabled={createTrip.isPending || !tripTitle.trim()}
                     className="flex-1"
                   >
-                    {isCreating ? 'Creating Trip...' : 'Create Trip'}
+                    {createTrip.isPending ? 'Creating Trip...' : 'Create Trip'}
                   </Button>
                   <Button 
                     type="button" 
