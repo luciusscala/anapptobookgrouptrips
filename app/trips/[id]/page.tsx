@@ -86,7 +86,7 @@ export default function TripDetailPage() {
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-4">
               <Link href="/trips">
-                <Button variant="secondary" size="small">← Back to Trips</Button>
+                <Button variant="secondary" size="sm">← Back to Trips</Button>
               </Link>
             </div>
             <h1 className="text-3xl font-bold">{trip.title}</h1>

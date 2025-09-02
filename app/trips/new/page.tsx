@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ProtectedRoute } from '@/components/auth/protected-route';
 import { useCreateTrip } from '@/hooks/useTrip';
 import { supabase } from '@/lib/supabase';
+import { Plane, MapPin, Users, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function NewTripPage() {
   const [tripTitle, setTripTitle] = useState('');
@@ -44,95 +45,139 @@ export default function NewTripPage() {
   return (
     <ProtectedRoute>
       <Layout>
-        <div className="max-w-2xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold">Create New Trip</h1>
-            <p className="text-gray-600">
-              Start planning your next adventure
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-[#FF5A5F]/10 to-[#E00007]/10 flex items-center justify-center">
+              <Sparkles className="h-10 w-10 text-[#FF5A5F]" />
+            </div>
+            <h1 className="text-4xl font-bold text-foreground mb-4">
+              Create New Trip
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Start planning your next adventure with a memorable title
             </p>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Trip Details</CardTitle>
-              <CardDescription>
-                Give your trip a memorable title to get started
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="tripTitle" className="block text-sm font-medium mb-2">
-                    Trip Title
-                  </label>
-                  <Input
-                    id="tripTitle"
-                    type="text"
-                    placeholder="e.g., Summer Europe Adventure, Business Trip to NYC"
-                    value={tripTitle}
-                    onChange={(e) => setTripTitle(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div className="flex gap-4">
-                  <Button 
-                    type="submit" 
-                    disabled={createTrip.isPending || !tripTitle.trim()}
-                    className="flex-1"
-                  >
-                    {createTrip.isPending ? 'Creating Trip...' : 'Create Trip'}
-                  </Button>
-                  <Button 
-                    type="button" 
-                    variant="secondary" 
-                    onClick={() => router.back()}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Form Section */}
+            <div className="lg:col-span-2">
+              <Card className="border-0 shadow-xl">
+                <div className="h-2 bg-gradient-to-r from-[#FF5A5F] to-[#E00007]"></div>
+                <CardHeader className="pb-6">
+                  <CardTitle className="text-2xl">Trip Details</CardTitle>
+                  <CardDescription className="text-base">
+                    Give your trip a memorable title that captures the essence of your adventure
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <label htmlFor="tripTitle" className="text-sm font-medium text-foreground">
+                        Trip Title
+                      </label>
+                      <Input
+                        id="tripTitle"
+                        type="text"
+                        placeholder="e.g., Summer Europe Adventure, Business Trip to NYC, Family Reunion in Hawaii"
+                        value={tripTitle}
+                        onChange={(e) => setTripTitle(e.target.value)}
+                        required
+                        className="h-12 text-base"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Choose a name that will help you remember this special trip
+                      </p>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                      <Button 
+                        type="submit" 
+                        disabled={createTrip.isPending || !tripTitle.trim()}
+                        variant="airbnb"
+                        size="lg"
+                        className="flex-1 gap-2"
+                      >
+                        {createTrip.isPending ? (
+                          <>
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                            Creating Trip...
+                          </>
+                        ) : (
+                          <>
+                            Create Trip
+                            <ArrowRight className="h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="lg"
+                        onClick={() => router.back()}
+                        className="sm:w-auto"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
 
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-4">What&apos;s next?</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <div className="text-2xl mb-2">✈️</div>
-                    <h4 className="font-medium mb-1">Add Flights</h4>
-                    <p className="text-sm text-gray-600">
-                      Paste your flight booking links to automatically extract details
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+            {/* Next Steps */}
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold text-foreground">What&apos;s next?</h3>
               
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <div className="text-2xl mb-2">🏨</div>
-                    <h4 className="font-medium mb-1">Book Lodging</h4>
-                    <p className="text-sm text-gray-600">
-                      Add hotel and accommodation bookings to track your stay
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <div className="text-2xl mb-2">👥</div>
-                    <h4 className="font-medium mb-1">Invite Travelers</h4>
-                    <p className="text-sm text-gray-600">
-                      Add your travel companions to keep everyone organized
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="space-y-4">
+                <Card className="group hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                        <Plane className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-1">Add Flights</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Paste your flight booking links to automatically extract all the details
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="group hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                        <MapPin className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-1">Book Lodging</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Add hotel and accommodation bookings to track your stay
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="group hover:shadow-lg transition-all duration-200 border-0 shadow-md">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                        <Users className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-1">Invite Travelers</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Add your travel companions to keep everyone organized
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>

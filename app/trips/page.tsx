@@ -5,7 +5,9 @@ import { TripList } from '@/components/trips/trip-list';
 import { useTrips } from '@/hooks/useTrip';
 import { Button } from '@/components/ui/button';
 import { ProtectedRoute } from '@/components/auth/protected-route';
+import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
+import { Plus, Plane, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function TripsPage() {
   const { data: tripsResponse, isLoading, error } = useTrips();
@@ -13,16 +15,24 @@ export default function TripsPage() {
   if (error) {
     return (
       <Layout>
-        <div className="text-center py-12">
-          <h2 className="text-2xl font-semibold text-red-600 mb-2">
-            Error loading trips
-          </h2>
-          <p className="text-gray-600 mb-4">
-            {error.message}
-          </p>
-          <Button onClick={() => window.location.reload()}>
-            Try Again
-          </Button>
+        <div className="max-w-2xl mx-auto text-center py-20">
+          <Card className="border-destructive/20 bg-destructive/5">
+            <CardContent className="pt-6">
+              <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-destructive/10 flex items-center justify-center">
+                <AlertCircle className="h-8 w-8 text-destructive" />
+              </div>
+              <h2 className="text-2xl font-semibold text-destructive mb-2">
+                Error loading trips
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                {error.message}
+              </p>
+              <Button onClick={() => window.location.reload()} variant="outline" className="gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Try Again
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       </Layout>
     );
@@ -31,23 +41,59 @@ export default function TripsPage() {
   return (
     <ProtectedRoute>
       <Layout>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-3xl font-bold">My Trips</h1>
-              <p className="text-gray-600">
-                Manage and organize your travel plans
-              </p>
+        <div className="max-w-7xl mx-auto">
+          {/* Header Section */}
+          <div className="mb-12">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+              <div>
+                <h1 className="text-4xl font-bold text-foreground mb-2">
+                  My Trips
+                </h1>
+                <p className="text-xl text-muted-foreground">
+                  Manage and organize your travel adventures
+                </p>
+              </div>
+              <Link href="/trips/new">
+                <Button variant="airbnb" size="lg" className="gap-2 w-full sm:w-auto">
+                  <Plus className="h-5 w-5" />
+                  Create New Trip
+                </Button>
+              </Link>
             </div>
-            <Link href="/trips/new">
-              <Button>Create New Trip</Button>
-            </Link>
           </div>
 
-          <TripList 
-            trips={tripsResponse?.trips || []} 
-            isLoading={isLoading} 
-          />
+          {/* Empty State */}
+          {!isLoading && (!tripsResponse?.trips || tripsResponse.trips.length === 0) && (
+            <div className="text-center py-20">
+              <Card className="max-w-md mx-auto border-0 shadow-lg">
+                <CardContent className="pt-8 pb-8">
+                  <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-[#FF5A5F]/10 to-[#E00007]/10 flex items-center justify-center">
+                    <Plane className="h-10 w-10 text-[#FF5A5F]" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-foreground mb-2">
+                    No trips yet
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    Start planning your first adventure by creating a new trip.
+                  </p>
+                  <Link href="/trips/new">
+                    <Button variant="airbnb" size="lg" className="gap-2">
+                      <Plus className="h-5 w-5" />
+                      Create Your First Trip
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Trips List */}
+          {tripsResponse?.trips && tripsResponse.trips.length > 0 && (
+            <TripList 
+              trips={tripsResponse.trips} 
+              isLoading={isLoading} 
+            />
+          )}
         </div>
       </Layout>
     </ProtectedRoute>
