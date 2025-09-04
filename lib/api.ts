@@ -5,7 +5,10 @@ import {
   AddLodgeData,
   AddPersonData,
   CreateTripData,
-  ApiError
+  ApiError,
+  Flight,
+  Lodge,
+  TripPerson
 } from './types';
 import { supabase } from './supabase';
 
@@ -90,6 +93,22 @@ class ApiClient {
   async getTrip(tripId: string): Promise<CompleteTripResponse> {
     // Use backend API to get complete trip data
     return this.request<CompleteTripResponse>(`/api/trip/${tripId}`);
+  }
+
+  // Specific data endpoints
+  async getFlights(tripId?: string): Promise<{ status: string; flights: Flight[] }> {
+    const url = tripId ? `/api/flights?trip_id=${tripId}` : '/api/flights';
+    return this.request(url);
+  }
+
+  async getLodges(tripId?: string): Promise<{ status: string; lodges: Lodge[] }> {
+    const url = tripId ? `/api/lodges?trip_id=${tripId}` : '/api/lodges';
+    return this.request(url);
+  }
+
+  async getPeople(tripId?: string): Promise<{ status: string; people: TripPerson[] }> {
+    const url = tripId ? `/api/people?trip_id=${tripId}` : '/api/people';
+    return this.request(url);
   }
 
   // Flight endpoints

@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ProtectedRoute } from '@/components/auth/protected-route';
 import { useCreateTrip } from '@/hooks/useTrip';
 import { supabase } from '@/lib/supabase';
-import { Plane, MapPin, Users, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function NewTripPage() {
   const [tripTitle, setTripTitle] = useState('');
@@ -49,7 +48,7 @@ export default function NewTripPage() {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
-              <Sparkles className="h-10 w-10 text-blue-600" />
+              <span className="text-blue-600 text-3xl">✨</span>
             </div>
             <h1 className="text-4xl font-bold text-foreground mb-4">
               Create New Trip
@@ -105,8 +104,7 @@ export default function NewTripPage() {
                           </>
                         ) : (
                           <>
-                            Create Trip
-                            <ArrowRight className="h-4 w-4" />
+                            Create Trip →
                           </>
                         )}
                       </Button>
@@ -134,7 +132,7 @@ export default function NewTripPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                        <Plane className="h-6 w-6 text-white" />
+                        <span className="text-white text-xl">✈</span>
                       </div>
                       <div>
                         <h4 className="font-semibold text-foreground mb-1">Add Flights</h4>
@@ -150,7 +148,7 @@ export default function NewTripPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="h-12 w-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                        <MapPin className="h-6 w-6 text-white" />
+                        <span className="text-white text-xl">🏠</span>
                       </div>
                       <div>
                         <h4 className="font-semibold text-foreground mb-1">Book Lodging</h4>
@@ -166,7 +164,7 @@ export default function NewTripPage() {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                        <Users className="h-6 w-6 text-white" />
+                        <span className="text-white text-xl">👥</span>
                       </div>
                       <div>
                         <h4 className="font-semibold text-foreground mb-1">Invite Travelers</h4>

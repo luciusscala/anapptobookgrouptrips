@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/auth-context';
 import { Separator } from '@/components/ui/separator';
-import { Mail, Lock, User, AlertCircle } from 'lucide-react';
 
 interface AuthFormProps {
   mode: 'signin' | 'signup';
@@ -77,8 +76,7 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
 
       {/* Error Message */}
       {error && (
-        <div className="p-4 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg flex items-center gap-2">
-          <AlertCircle className="h-4 w-4" />
+        <div className="p-4 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg">
           {error}
         </div>
       )}
@@ -91,7 +89,6 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="name"
                 type="text"
@@ -110,7 +107,6 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
             Email Address
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id="email"
               type="email"
@@ -128,7 +124,6 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id="password"
               type="password"

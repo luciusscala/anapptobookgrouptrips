@@ -7,6 +7,12 @@ export interface Trip {
   created_at: string;
 }
 
+export interface TripPreview {
+  id: string;
+  title: string;
+  people_count: number;
+}
+
 export interface FlightSegment {
   id: string;
   flight_id: string;
@@ -78,8 +84,8 @@ export interface PeopleResponse extends ApiResponse<TripPerson[]> {
   people: TripPerson[];
 }
 
-export interface TripsResponse extends ApiResponse<Trip[]> {
-  trips: Trip[];
+export interface TripsResponse extends ApiResponse<TripPreview[]> {
+  trips: TripPreview[];
 }
 
 export interface CompleteTripResponse extends ApiResponse<CompleteTripData> {

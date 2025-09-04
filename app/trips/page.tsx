@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { ProtectedRoute } from '@/components/auth/protected-route';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
-import { Plus, Plane, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function TripsPage() {
   const { data: tripsResponse, isLoading, error } = useTrips();
@@ -19,7 +18,7 @@ export default function TripsPage() {
           <Card className="border-destructive/20 bg-destructive/5">
             <CardContent className="pt-6">
               <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-destructive/10 flex items-center justify-center">
-                <AlertCircle className="h-8 w-8 text-destructive" />
+                <span className="text-destructive text-2xl">⚠</span>
               </div>
               <h2 className="text-2xl font-semibold text-destructive mb-2">
                 Error loading trips
@@ -27,8 +26,7 @@ export default function TripsPage() {
               <p className="text-muted-foreground mb-6">
                 {error.message}
               </p>
-              <Button onClick={() => window.location.reload()} variant="outline" className="gap-2">
-                <RefreshCw className="h-4 w-4" />
+              <Button onClick={() => window.location.reload()} variant="outline">
                 Try Again
               </Button>
             </CardContent>
@@ -54,9 +52,8 @@ export default function TripsPage() {
                 </p>
               </div>
               <Link href="/trips/new">
-                <Button variant="primary" size="lg" className="gap-2 w-full sm:w-auto">
-                  <Plus className="h-5 w-5" />
-                  Create New Trip
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">
+                  + Create New Trip
                 </Button>
               </Link>
             </div>
@@ -68,7 +65,7 @@ export default function TripsPage() {
               <Card className="max-w-md mx-auto border-0 shadow-lg">
                 <CardContent className="pt-8 pb-8">
                   <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
-                    <Plane className="h-10 w-10 text-blue-600" />
+                    <span className="text-blue-600 text-3xl">✈</span>
                   </div>
                   <h3 className="text-2xl font-semibold text-foreground mb-2">
                     No trips yet
@@ -77,9 +74,8 @@ export default function TripsPage() {
                     Start planning your first adventure by creating a new trip.
                   </p>
                   <Link href="/trips/new">
-                    <Button variant="primary" size="lg" className="gap-2">
-                      <Plus className="h-5 w-5" />
-                      Create Your First Trip
+                    <Button variant="primary" size="lg">
+                      + Create Your First Trip
                     </Button>
                   </Link>
                 </CardContent>

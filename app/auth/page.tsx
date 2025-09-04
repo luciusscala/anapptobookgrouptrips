@@ -6,7 +6,6 @@ import { AuthForm } from '@/components/auth/auth-form';
 import { useAuth } from '@/contexts/auth-context';
 import { Layout } from '@/components/layout/layout';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plane, Sparkles } from 'lucide-react';
 
 export default function AuthPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
@@ -65,19 +64,19 @@ export default function AuthPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                  <Sparkles className="h-4 w-4 text-green-600" />
+                  <span className="text-green-600">✨</span>
                 </div>
                 <span className="text-foreground">Smart flight parsing from booking links</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Sparkles className="h-4 w-4 text-blue-600" />
+                  <span className="text-blue-600">✨</span>
                 </div>
                 <span className="text-foreground">Track accommodations and expenses</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
-                  <Sparkles className="h-4 w-4 text-purple-600" />
+                  <span className="text-purple-600">✨</span>
                 </div>
                 <span className="text-foreground">Coordinate with travel companions</span>
               </div>

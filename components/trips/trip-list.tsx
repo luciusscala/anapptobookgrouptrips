@@ -1,30 +1,22 @@
-import { TripCard } from './trip-card';
-import { Trip } from '@/lib/types';
+import { TripPreview } from '@/lib/types';
+import { TripCard } from '@/components/trips/trip-card';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface TripListProps {
-  trips: Trip[];
+  trips: TripPreview[];
   isLoading?: boolean;
 }
 
 export function TripList({ trips, isLoading }: TripListProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {Array.from({ length: 6 }).map((_, i) => (
-          <Card key={i} className="border-0 shadow-lg">
-            <div className="h-2 bg-gradient-to-r from-muted to-muted animate-pulse"></div>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                <div className="h-6 bg-muted animate-pulse rounded"></div>
-                <div className="h-4 bg-muted animate-pulse rounded w-3/4"></div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="h-16 bg-muted animate-pulse rounded-lg"></div>
-                  <div className="h-16 bg-muted animate-pulse rounded-lg"></div>
-                  <div className="h-16 bg-muted animate-pulse rounded-lg"></div>
-                </div>
-                <div className="h-12 bg-muted animate-pulse rounded-lg"></div>
-              </div>
+          <Card key={i} className="animate-pulse">
+            <CardContent className="pt-6">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
+              <div className="h-8 bg-gray-200 rounded"></div>
             </CardContent>
           </Card>
         ))}
@@ -33,7 +25,7 @@ export function TripList({ trips, isLoading }: TripListProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {trips.map((trip) => (
         <TripCard key={trip.id} trip={trip} />
       ))}

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/auth-context';
-import { Plane, Plus, User, LogOut, Settings } from 'lucide-react';
 import * as React from 'react';
 
 export function Header() {
@@ -36,9 +35,8 @@ export function Header() {
                 </Button>
               </Link>
               <Link href="/trips/new">
-                <Button variant="primary" size="sm" className="gap-2">
-                  <Plus className="h-4 w-4" />
-                  New Trip
+                <Button variant="primary" size="sm">
+                  + New Trip
                 </Button>
               </Link>
             </>
@@ -81,11 +79,9 @@ export function Header() {
                   
                   <div className="py-1">
                     <Link href="/trips" className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-muted">
-                      <Plane className="h-4 w-4 mr-3" />
                       My Trips
                     </Link>
                     <Link href="/debug" className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-muted">
-                      <Settings className="h-4 w-4 mr-3" />
                       Settings
                     </Link>
                   </div>
@@ -96,7 +92,6 @@ export function Header() {
                     onClick={handleSignOut}
                     className="flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-muted"
                   >
-                    <LogOut className="h-4 w-4 mr-3" />
                     Sign out
                   </button>
                 </div>
@@ -124,15 +119,13 @@ export function Header() {
         <div className="md:hidden border-t bg-background">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">
             <Link href="/trips">
-              <Button variant="ghost" size="sm" className="gap-2">
-                <Plane className="h-4 w-4" />
+              <Button variant="ghost" size="sm">
                 My Trips
               </Button>
             </Link>
             <Link href="/trips/new">
-              <Button variant="primary" size="sm" className="gap-2">
-                <Plus className="h-4 w-4" />
-                New Trip
+              <Button variant="primary" size="sm">
+                + New Trip
               </Button>
             </Link>
           </div>

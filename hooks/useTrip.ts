@@ -34,8 +34,33 @@ export function useTrip(tripId: string) {
   });
 }
 
-// Note: Individual data hooks removed - use useTrip() for complete trip data
-// This simplifies the data flow and reduces API calls
+// Individual data hooks for specific endpoints
+export function useFlights(tripId: string) {
+  return useQuery({
+    queryKey: ['flights', tripId],
+    queryFn: () => apiClient.getFlights(tripId),
+    enabled: !!tripId,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+}
+
+export function useLodges(tripId: string) {
+  return useQuery({
+    queryKey: ['lodges', tripId],
+    queryFn: () => apiClient.getLodges(tripId),
+    enabled: !!tripId,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+}
+
+export function usePeople(tripId: string) {
+  return useQuery({
+    queryKey: ['people', tripId],
+    queryFn: () => apiClient.getPeople(tripId),
+    enabled: !!tripId,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+}
 
 // Hook to add a flight to a trip
 export function useAddFlight() {
