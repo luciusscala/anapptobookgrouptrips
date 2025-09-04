@@ -149,7 +149,7 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
 
         <Button 
           type="submit" 
-          variant="airbnb"
+          variant="primary"
           size="lg"
           className="w-full h-12 text-base font-medium" 
           disabled={loading}
@@ -212,7 +212,7 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
             <button
               type="button"
               onClick={onToggleMode}
-              className="text-[#FF5A5F] hover:text-[#E00007] font-medium transition-colors"
+              className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
               Sign up
             </button>
@@ -223,7 +223,7 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
             <button
               type="button"
               onClick={onToggleMode}
-              className="text-[#FF5A5F] hover:text-[#E00007] font-medium transition-colors"
+              className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
               Sign in
             </button>

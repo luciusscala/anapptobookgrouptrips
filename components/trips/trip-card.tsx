@@ -19,12 +19,12 @@ export function TripCard({ trip, flightsCount = 0, lodgesCount = 0, peopleCount 
     <Link href={`/trips/${trip.id}`} className="group">
       <Card className="hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-lg group-hover:scale-[1.02] overflow-hidden">
         {/* Header with gradient background */}
-        <div className="h-2 bg-gradient-to-r from-[#FF5A5F] to-[#E00007]"></div>
+        <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-700"></div>
         
         <CardHeader className="pb-4">
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <CardTitle className="text-xl font-semibold text-foreground group-hover:text-[#FF5A5F] transition-colors duration-200 mb-2">
+              <CardTitle className="text-xl font-semibold text-foreground group-hover:text-blue-600 transition-colors duration-200 mb-2">
                 {trip.title}
               </CardTitle>
               <CardDescription className="flex items-center gap-2 text-sm">
@@ -32,7 +32,7 @@ export function TripCard({ trip, flightsCount = 0, lodgesCount = 0, peopleCount 
                 Created {formatDate(trip.created_at)}
               </CardDescription>
             </div>
-            <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-[#FF5A5F] group-hover:translate-x-1 transition-all duration-200" />
+            <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-200" />
           </div>
         </CardHeader>
 

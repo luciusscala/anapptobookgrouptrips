@@ -54,7 +54,7 @@ export default function TripsPage() {
                 </p>
               </div>
               <Link href="/trips/new">
-                <Button variant="airbnb" size="lg" className="gap-2 w-full sm:w-auto">
+                <Button variant="primary" size="lg" className="gap-2 w-full sm:w-auto">
                   <Plus className="h-5 w-5" />
                   Create New Trip
                 </Button>
@@ -67,8 +67,8 @@ export default function TripsPage() {
             <div className="text-center py-20">
               <Card className="max-w-md mx-auto border-0 shadow-lg">
                 <CardContent className="pt-8 pb-8">
-                  <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-[#FF5A5F]/10 to-[#E00007]/10 flex items-center justify-center">
-                    <Plane className="h-10 w-10 text-[#FF5A5F]" />
+                  <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
+                    <Plane className="h-10 w-10 text-blue-600" />
                   </div>
                   <h3 className="text-2xl font-semibold text-foreground mb-2">
                     No trips yet
@@ -77,7 +77,7 @@ export default function TripsPage() {
                     Start planning your first adventure by creating a new trip.
                   </p>
                   <Link href="/trips/new">
-                    <Button variant="airbnb" size="lg" className="gap-2">
+                    <Button variant="primary" size="lg" className="gap-2">
                       <Plus className="h-5 w-5" />
                       Create Your First Trip
                     </Button>

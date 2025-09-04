@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Airbnb-inspired color palette
+// Color palette
 export const colors = {
   primary: {
     50: '#f0f9ff',
@@ -57,7 +57,7 @@ export const colors = {
   }
 }
 
-// Airbnb-inspired spacing scale
+// Spacing scale
 export const spacing = {
   xs: '0.25rem',    // 4px
   sm: '0.5rem',     // 8px
@@ -71,7 +71,7 @@ export const spacing = {
   '6xl': '4rem',    // 64px
 }
 
-// Airbnb-inspired typography scale
+// Typography scale
 export const typography = {
   fontFamily: {
     sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
@@ -98,7 +98,7 @@ export const typography = {
   }
 }
 
-// Airbnb-inspired border radius
+// Border radius
 export const borderRadius = {
   none: '0px',
   sm: '0.125rem',   // 2px
@@ -111,7 +111,7 @@ export const borderRadius = {
   full: '9999px',
 }
 
-// Airbnb-inspired shadows
+// Shadows
 export const shadows = {
   sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
   base: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',

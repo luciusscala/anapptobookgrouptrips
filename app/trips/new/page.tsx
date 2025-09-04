@@ -48,8 +48,8 @@ export default function NewTripPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-[#FF5A5F]/10 to-[#E00007]/10 flex items-center justify-center">
-              <Sparkles className="h-10 w-10 text-[#FF5A5F]" />
+            <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
+              <Sparkles className="h-10 w-10 text-blue-600" />
             </div>
             <h1 className="text-4xl font-bold text-foreground mb-4">
               Create New Trip
@@ -63,7 +63,7 @@ export default function NewTripPage() {
             {/* Form Section */}
             <div className="lg:col-span-2">
               <Card className="border-0 shadow-xl">
-                <div className="h-2 bg-gradient-to-r from-[#FF5A5F] to-[#E00007]"></div>
+                <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-700"></div>
                 <CardHeader className="pb-6">
                   <CardTitle className="text-2xl">Trip Details</CardTitle>
                   <CardDescription className="text-base">
@@ -94,7 +94,7 @@ export default function NewTripPage() {
                       <Button 
                         type="submit" 
                         disabled={createTrip.isPending || !tripTitle.trim()}
-                        variant="airbnb"
+                        variant="primary"
                         size="lg"
                         className="flex-1 gap-2"
                       >

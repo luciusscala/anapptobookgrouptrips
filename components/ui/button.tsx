@@ -14,9 +14,9 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Airbnb-inspired variants
-        airbnb: "bg-[#FF5A5F] text-white hover:bg-[#E00007] shadow-lg hover:shadow-xl transition-all duration-200",
-        airbnbOutline: "border-2 border-[#FF5A5F] text-[#FF5A5F] hover:bg-[#FF5A5F] hover:text-white shadow-sm transition-all duration-200",
+        // Primary button variants
+        primary: "bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-200",
+        primaryOutline: "border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white shadow-sm transition-all duration-200",
         subtle: "bg-gray-50 text-gray-900 hover:bg-gray-100 border border-gray-200 shadow-sm",
       },
       size: {

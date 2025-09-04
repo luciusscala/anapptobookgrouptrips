@@ -4,8 +4,8 @@ import { QueryProvider } from "@/providers/query-provider";
 import { AuthProvider } from "@/contexts/auth-context";
 
 export const metadata: Metadata = {
-  title: "Travel Planner",
-  description: "Plan and manage your travel itineraries",
+  title: "App",
+  description: "Plan and manage your itineraries",
 };
 
 export default function RootLayout({

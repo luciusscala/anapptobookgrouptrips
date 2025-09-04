@@ -22,12 +22,6 @@ export function Header() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF5A5F] to-[#E00007] flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-            <Plane className="h-4 w-4 text-white" />
-          </div>
-          <span className="font-bold text-xl text-foreground group-hover:text-[#FF5A5F] transition-colors duration-200">
-            TravelPlanner
-          </span>
         </Link>
         
         {/* Navigation */}
@@ -37,12 +31,12 @@ export function Header() {
           ) : user ? (
             <>
               <Link href="/trips">
-                <Button variant="ghost" className="text-foreground hover:text-[#FF5A5F]">
+                <Button variant="ghost" className="text-foreground hover:text-blue-600">
                   My Trips
                 </Button>
               </Link>
               <Link href="/trips/new">
-                <Button variant="airbnb" size="sm" className="gap-2">
+                <Button variant="primary" size="sm" className="gap-2">
                   <Plus className="h-4 w-4" />
                   New Trip
                 </Button>
@@ -50,7 +44,7 @@ export function Header() {
             </>
           ) : (
             <Link href="/auth">
-              <Button variant="airbnb">Get Started</Button>
+              <Button variant="primary">Get Started</Button>
             </Link>
           )}
         </nav>
@@ -67,7 +61,7 @@ export function Header() {
               >
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" alt={user.name || user.email} />
-                  <AvatarFallback className="bg-[#FF5A5F] text-white text-sm">
+                  <AvatarFallback className="bg-blue-600 text-white text-sm">
                     {user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -116,7 +110,7 @@ export function Header() {
                 </Button>
               </Link>
               <Link href="/auth">
-                <Button variant="airbnb" size="sm">
+                <Button variant="primary" size="sm">
                   Get Started
                 </Button>
               </Link>
@@ -136,7 +130,7 @@ export function Header() {
               </Button>
             </Link>
             <Link href="/trips/new">
-              <Button variant="airbnb" size="sm" className="gap-2">
+              <Button variant="primary" size="sm" className="gap-2">
                 <Plus className="h-4 w-4" />
                 New Trip
               </Button>

@@ -1,4 +1,4 @@
-# Travel Planner Frontend
+# App Frontend
 
 A modern Next.js application for managing travel itineraries, built with TypeScript, Tailwind CSS, and TanStack Query.
 
