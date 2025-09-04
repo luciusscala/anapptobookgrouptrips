@@ -2,36 +2,54 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { AuthForm } from '@/components/auth/auth-form';
 import { useAuth } from '@/contexts/auth-context';
-import { Layout } from '@/components/layout/layout';
-import { Card, CardContent } from '@/components/ui/card';
 
 export default function AuthPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-  const { user, loading } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { user, loading: authLoading, signIn, signUp } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && user) {
+    if (!authLoading && user) {
       router.push('/');
     }
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
-  if (loading) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      let result;
+      if (mode === 'signin') {
+        result = await signIn(email, password);
+      } else {
+        result = await signUp(email, password, name);
+      }
+
+      if (result.error) {
+        setError(result.error.message);
+      }
+    } catch {
+      setError('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (authLoading) {
     return (
-      <Layout>
-        <div className="flex items-center justify-center min-h-[80vh]">
-          <Card className="border-0 shadow-xl max-w-md mx-auto">
-            <CardContent className="pt-8 pb-8 text-center">
-              <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-br from-blue-500/10 to-blue-600/10 flex items-center justify-center">
-                <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
-              </div>
-              <p className="text-muted-foreground">Loading...</p>
-            </CardContent>
-          </Card>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <p className="text-gray-600">Loading...</p>
         </div>
-      </Layout>
+      </div>
     );
   }
 
@@ -40,63 +58,85 @@ export default function AuthPage() {
   }
 
   return (
-    <Layout className="py-0">
-      <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-background to-blue-500/5 flex items-center justify-center py-12">
-        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left side - App Info */}
-          <div className="text-center lg:text-left space-y-8">
-            <div className="space-y-6">
-              <div className="flex items-center justify-center lg:justify-start gap-3">
-              </div>
-              
+    <div className="min-h-screen flex items-center justify-center bg-white p-8">
+      <div className="w-full max-w-md">
+        <div className="border border-black p-8">
+          <h1 className="text-2xl font-bold text-black mb-6 text-center">
+            {mode === 'signin' ? 'Sign In' : 'Sign Up'}
+          </h1>
+
+          {error && (
+            <div className="mb-4 p-3 bg-gray-100 border border-gray-300 text-sm text-black">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {mode === 'signup' && (
               <div>
-                <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
-                  Welcome to your
-                  <span className="text-blue-600 block">travel hub</span>
-                </h1>
-                <p className="text-xl text-muted-foreground max-w-lg">
-                  Plan, organize, and manage all your travel adventures in one beautiful, intuitive platform.
-                </p>
-              </div>
-            </div>
-
-            {/* Features */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                  <span className="text-green-600">✨</span>
-                </div>
-                <span className="text-foreground">Smart flight parsing from booking links</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                  <span className="text-blue-600">✨</span>
-                </div>
-                <span className="text-foreground">Track accommodations and expenses</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
-                  <span className="text-purple-600">✨</span>
-                </div>
-                <span className="text-foreground">Coordinate with travel companions</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right side - Auth Form */}
-          <div className="flex justify-center">
-            <Card className="w-full max-w-md border-0 shadow-2xl">
-              <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-700"></div>
-              <CardContent className="p-8">
-                <AuthForm 
-                  mode={mode} 
-                  onToggleMode={() => setMode(mode === 'signin' ? 'signup' : 'signin')} 
+                <label htmlFor="name" className="block text-sm font-medium text-black mb-1">
+                  Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 focus:border-black focus:outline-none"
                 />
-              </CardContent>
-            </Card>
+              </div>
+            )}
+            
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-black mb-1">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-gray-300 focus:border-black focus:outline-none"
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-black mb-1">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full px-3 py-2 border border-gray-300 focus:border-black focus:outline-none"
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="w-full bg-black text-white py-2 hover:bg-gray-800 disabled:bg-gray-400"
+            >
+              {loading ? 'Loading...' : (mode === 'signin' ? 'Sign In' : 'Sign Up')}
+            </button>
+          </form>
+
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
+              className="text-black hover:underline"
+            >
+              {mode === 'signin' ? 'Need an account? Sign up' : 'Have an account? Sign in'}
+            </button>
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }

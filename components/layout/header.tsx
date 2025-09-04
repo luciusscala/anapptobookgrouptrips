@@ -1,9 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/contexts/auth-context';
 import * as React from 'react';
 
@@ -17,80 +14,68 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-3 group">
+    <header className="border-b bg-white">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <Link href="/" className="text-2xl font-bold text-black">
+          Travel App
         </Link>
         
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
+        <nav className="hidden md:flex items-center space-x-6">
           {loading ? (
-            <div className="h-8 w-20 bg-muted rounded-lg animate-pulse"></div>
+            <div className="h-8 w-20 bg-gray-200 animate-pulse"></div>
           ) : user ? (
             <>
-              <Link href="/trips">
-                <Button variant="ghost" className="text-foreground hover:text-blue-600">
-                  My Trips
-                </Button>
+              <Link href="/trips" className="text-black hover:text-gray-600">
+                My Trips
               </Link>
-              <Link href="/trips/new">
-                <Button variant="primary" size="sm">
-                  + New Trip
-                </Button>
+              <Link href="/trips/new" className="bg-black text-white px-4 py-2 hover:bg-gray-800">
+                New Trip
               </Link>
             </>
           ) : (
-            <Link href="/auth">
-              <Button variant="primary">Get Started</Button>
+            <Link href="/auth" className="bg-black text-white px-4 py-2 hover:bg-gray-800">
+              Get Started
             </Link>
           )}
         </nav>
 
-        {/* User Menu */}
         <div className="flex items-center space-x-4">
           {loading ? (
-            <div className="h-8 w-8 bg-muted rounded-full animate-pulse"></div>
+            <div className="h-8 w-20 bg-gray-200 animate-pulse"></div>
           ) : user ? (
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center space-x-2 p-2 rounded-full hover:bg-muted transition-colors duration-200"
+                className="text-black hover:text-gray-600"
               >
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src="" alt={user.name || user.email} />
-                  <AvatarFallback className="bg-blue-600 text-white text-sm">
-                    {user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
+                {user.name || user.email}
               </button>
 
-              {/* Dropdown Menu */}
               {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-background border rounded-xl shadow-lg py-2 z-50">
-                  <div className="px-4 py-2 border-b">
-                    <p className="text-sm font-medium text-foreground">
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-black py-2 z-50">
+                  <div className="px-4 py-2 border-b border-gray-300">
+                    <p className="text-sm font-medium text-black">
                       {user.name || 'User'}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       {user.email}
                     </p>
                   </div>
                   
                   <div className="py-1">
-                    <Link href="/trips" className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-muted">
+                    <Link href="/trips" className="block px-4 py-2 text-sm text-black hover:bg-gray-100">
                       My Trips
                     </Link>
-                    <Link href="/debug" className="flex items-center px-4 py-2 text-sm text-foreground hover:bg-muted">
+                    <Link href="/debug" className="block px-4 py-2 text-sm text-black hover:bg-gray-100">
                       Settings
                     </Link>
                   </div>
                   
-                  <Separator className="my-1" />
+                  <div className="border-t border-gray-300 my-1"></div>
                   
                   <button
                     onClick={handleSignOut}
-                    className="flex items-center w-full px-4 py-2 text-sm text-foreground hover:bg-muted"
+                    className="block w-full text-left px-4 py-2 text-sm text-black hover:bg-gray-100"
                   >
                     Sign out
                   </button>
@@ -98,35 +83,21 @@ export function Header() {
               )}
             </div>
           ) : (
-            <div className="flex items-center space-x-2">
-              <Link href="/auth">
-                <Button variant="ghost" className="hidden sm:inline-flex">
-                  Sign in
-                </Button>
-              </Link>
-              <Link href="/auth">
-                <Button variant="primary" size="sm">
-                  Get Started
-                </Button>
-              </Link>
-            </div>
+            <Link href="/auth" className="bg-black text-white px-4 py-2 hover:bg-gray-800">
+              Sign In
+            </Link>
           )}
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       {user && (
-        <div className="md:hidden border-t bg-background">
+        <div className="md:hidden border-t bg-white">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-            <Link href="/trips">
-              <Button variant="ghost" size="sm">
-                My Trips
-              </Button>
+            <Link href="/trips" className="text-black hover:text-gray-600">
+              My Trips
             </Link>
-            <Link href="/trips/new">
-              <Button variant="primary" size="sm">
-                + New Trip
-              </Button>
+            <Link href="/trips/new" className="bg-black text-white px-4 py-2 hover:bg-gray-800">
+              New Trip
             </Link>
           </div>
         </div>

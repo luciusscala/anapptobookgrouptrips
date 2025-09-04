@@ -3,10 +3,12 @@
 import { TripList } from '@/components/trips/trip-list';
 import { useTrips } from '@/hooks/useTrip';
 import { ProtectedRoute } from '@/components/auth/protected-route';
+import { useAuth } from '@/contexts/auth-context';
 import Link from 'next/link';
 
 export default function TripsPage() {
   const { data: tripsResponse, isLoading, error } = useTrips();
+  const { signOut } = useAuth();
 
   if (error) {
     return (
@@ -33,6 +35,17 @@ export default function TripsPage() {
     <ProtectedRoute>
       <div className="min-h-screen bg-white p-8">
         <div className="max-w-4xl mx-auto">
+          {/* Header with Signout */}
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold text-black">My Trips</h1>
+            <button 
+              onClick={() => signOut()}
+              className="bg-gray-200 text-black px-4 py-2 hover:bg-gray-300"
+            >
+              Sign Out
+            </button>
+          </div>
+
           {/* Empty State */}
           {!isLoading && (!tripsResponse?.trips || tripsResponse.trips.length === 0) && (
             <div className="text-center py-20">
@@ -53,10 +66,12 @@ export default function TripsPage() {
 
           {/* Trips List */}
           {tripsResponse?.trips && tripsResponse.trips.length > 0 && (
-            <TripList 
-              trips={tripsResponse.trips} 
-              isLoading={isLoading} 
-            />
+            <div className="flex justify-center">
+              <TripList 
+                trips={tripsResponse.trips} 
+                isLoading={isLoading} 
+              />
+            </div>
           )}
         </div>
       </div>
