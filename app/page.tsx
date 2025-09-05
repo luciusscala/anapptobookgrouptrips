@@ -20,8 +20,8 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-black mb-8">&quot;wherever you go, go with all your heart [and friends]&quot;</h1>
-          <p className="text-gray-600">Loading...</p>
+          <h1 className="mb-8">&quot;wherever you go, go with all your heart [and friends]&quot;</h1>
+          <p className="text-gray-500">Loading...</p>
         </div>
       </div>
     );
@@ -34,9 +34,9 @@ export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-black mb-8">&quot;wherever you go, go with all your heart [and friends]&quot;</h1>
+        <h1 className="mb-8">&quot;wherever you go, go with all your heart [and friends]&quot;</h1>
         <Link href="/auth">
-          <Button className="bg-black text-white hover:bg-gray-800">
+          <Button>
             login
           </Button>
         </Link>

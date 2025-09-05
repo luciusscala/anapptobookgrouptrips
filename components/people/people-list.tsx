@@ -8,19 +8,19 @@ interface PeopleListProps {
 export function PeopleList({ people }: PeopleListProps) {
   if (people.length === 0) {
     return (
-      <Card>
+      <Card variant="nested">
         <CardHeader>
           <CardTitle>Travelers</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-600">No travelers added yet.</p>
+          <p className="text-gray-500">No travelers added yet.</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
+    <Card variant="nested">
       <CardHeader>
         <CardTitle>Travelers ({people.length})</CardTitle>
       </CardHeader>

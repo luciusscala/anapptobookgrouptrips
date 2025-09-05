@@ -1,5 +1,7 @@
 import { Lodge } from '@/lib/types';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface LodgeCardProps {
   lodge: Lodge;
@@ -8,9 +10,11 @@ interface LodgeCardProps {
 export function LodgeCard({ lodge }: LodgeCardProps) {
   if (!lodge) {
     return (
-      <div className="border border-black p-6 text-center">
-        <p className="text-gray-600">Loading lodge information...</p>
-      </div>
+      <Card variant="nested">
+        <CardContent className="text-center">
+          <p className="text-gray-500">Loading lodge information...</p>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -29,68 +33,72 @@ export function LodgeCard({ lodge }: LodgeCardProps) {
   };
 
   return (
-    <div className="border border-black p-6">
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h3 className="text-lg font-semibold text-black">
-            {lodge.name || 'Accommodation'}
-          </h3>
-          <p className="text-sm text-gray-600">Booked</p>
-        </div>
-        <div className="text-right">
-          <div className="text-lg font-semibold text-black">
-            {lodge.total_cost ? formatCurrency(lodge.total_cost, lodge.currency) : 'Price TBD'}
+    <Card variant="nested">
+      <CardHeader>
+        <div className="flex justify-between items-start">
+          <div>
+            <CardTitle className="text-lg">
+              {lodge.name || 'Accommodation'}
+            </CardTitle>
+            <CardDescription>Booked</CardDescription>
           </div>
-          {getPricePerNight() && (
-            <div className="text-sm text-gray-600">
-              {formatCurrency(getPricePerNight()!, lodge.currency)}/night
+          <div className="text-right">
+            <div className="text-lg font-semibold text-black">
+              {lodge.total_cost ? formatCurrency(lodge.total_cost, lodge.currency) : 'Price TBD'}
             </div>
-          )}
-        </div>
-      </div>
-      
-      <div className="space-y-3">
-        {lodge.location && (
-          <div className="text-sm text-gray-600">
-            {lodge.location}
+            {getPricePerNight() && (
+              <div className="text-sm text-gray-500">
+                {formatCurrency(getPricePerNight()!, lodge.currency)}/night
+              </div>
+            )}
           </div>
-        )}
-        
-        <div className="grid grid-cols-2 gap-4">
-          {lodge.check_in && (
-            <div className="text-sm text-gray-600">
-              <div className="font-medium text-black">Check-in</div>
-              <div>{formatDate(lodge.check_in)}</div>
+        </div>
+      </CardHeader>
+      
+      <CardContent>
+        <div className="space-y-3">
+          {lodge.location && (
+            <div className="text-sm text-gray-500">
+              {lodge.location}
             </div>
           )}
           
-          {lodge.check_out && (
-            <div className="text-sm text-gray-600">
-              <div className="font-medium text-black">Check-out</div>
-              <div>{formatDate(lodge.check_out)}</div>
+          <div className="grid grid-cols-2 gap-4">
+            {lodge.check_in && (
+              <div className="text-sm text-gray-500">
+                <div className="font-medium text-black">Check-in</div>
+                <div>{formatDate(lodge.check_in)}</div>
+              </div>
+            )}
+            
+            {lodge.check_out && (
+              <div className="text-sm text-gray-500">
+                <div className="font-medium text-black">Check-out</div>
+                <div>{formatDate(lodge.check_out)}</div>
+              </div>
+            )}
+          </div>
+          
+          {lodge.number_of_guests && (
+            <div className="text-sm text-gray-500">
+              {lodge.number_of_guests} guest{lodge.number_of_guests > 1 ? 's' : ''}
             </div>
           )}
         </div>
         
-        {lodge.number_of_guests && (
-          <div className="text-sm text-gray-600">
-            {lodge.number_of_guests} guest{lodge.number_of_guests > 1 ? 's' : ''}
+        {lodge.link && (
+          <div className="mt-4 pt-4 border-t border-gray-300">
+            <a 
+              href={lodge.link} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sm text-black hover:underline"
+            >
+              View booking details
+            </a>
           </div>
         )}
-      </div>
-      
-      {lodge.link && (
-        <div className="mt-4 pt-4 border-t border-gray-300">
-          <a 
-            href={lodge.link} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-sm text-black hover:underline"
-          >
-            View booking details
-          </a>
-        </div>
-      )}
-    </div>
+      </CardContent>
+    </Card>
   );
 }

@@ -4,27 +4,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transform hover:scale-110 active:scale-95",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground shadow-sm",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        // Primary button variants
-        primary: "bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-200",
-        primaryOutline: "border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white shadow-sm transition-all duration-200",
-        subtle: "bg-gray-50 text-gray-900 hover:bg-gray-100 border border-gray-200 shadow-sm",
+        default: "bg-gray-50 text-[#161616] hover:bg-gray-100 hover:shadow-2xl shadow-lg hover:shadow-xl",
+        white: "bg-white text-[#161616] hover:bg-gray-50 hover:shadow-2xl shadow-lg hover:shadow-xl",
+        card: "bg-gray-50 text-[#161616] hover:bg-gray-100 hover:shadow-2xl shadow-lg hover:shadow-xl", // For buttons on white cards
+        link: "text-current underline-offset-4 hover:underline hover:text-gray-600 bg-transparent shadow-none hover:scale-105",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-12 rounded-lg px-8 text-base",
-        xl: "h-14 rounded-xl px-10 text-lg",
-        icon: "h-10 w-10",
+        default: "h-9 px-4 py-2 text-xs", /* h-10 -> h-9, text-sm -> text-xs */
+        sm: "h-7 rounded-md px-3 text-xs", /* h-8 -> h-7 */
+        lg: "h-10 rounded-lg px-6 text-sm", /* h-12 -> h-10, text-base -> text-sm */
+        icon: "h-9 w-9", /* h-10 -> h-9 */
       },
     },
     defaultVariants: {
