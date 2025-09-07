@@ -52,15 +52,15 @@ export function FlightCard({ flight }: FlightCardProps) {
   // If no segments, show basic flight info
   if (!firstSegment || !lastSegment) {
     return (
-      <Card variant="nested">
+      <Card>
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle className="text-lg">{getFlightTitle()}</CardTitle>
+              <CardTitle>{getFlightTitle()}</CardTitle>
               <CardDescription>Processing</CardDescription>
             </div>
             <div className="text-right">
-              <div className="text-lg font-semibold text-black">
+              <div className="font-semibold">
                 {flight.total_price ? formatCurrency(flight.total_price, flight.currency) : 'Price TBD'}
               </div>
               <Badge variant="secondary" className="mt-1">
@@ -70,18 +70,18 @@ export function FlightCard({ flight }: FlightCardProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="p-3 bg-gray-100 rounded-lg">
-            <p className="text-sm text-gray-500">
+          <div className="p-3 border border-black">
+            <p className="text-sm">
               Flight information is being processed...
             </p>
           </div>
           {flight.link && (
-            <div className="mt-4 pt-4 border-t border-gray-300">
+            <div className="mt-4 pt-4 border-t border-black">
               <a 
                 href={flight.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-sm text-black hover:underline"
+                className="text-sm underline"
               >
                 View booking details
               </a>
@@ -93,15 +93,15 @@ export function FlightCard({ flight }: FlightCardProps) {
   }
 
   return (
-    <Card variant="nested">
+    <Card>
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-lg">{getFlightTitle()}</CardTitle>
+            <CardTitle>{getFlightTitle()}</CardTitle>
             <CardDescription>Confirmed</CardDescription>
           </div>
           <div className="text-right">
-            <div className="text-lg font-semibold text-black">
+            <div className="font-semibold">
               {formatCurrency(flight.total_price, flight.currency)}
             </div>
             <Badge variant="secondary" className="mt-1">
@@ -114,17 +114,17 @@ export function FlightCard({ flight }: FlightCardProps) {
       <CardContent>
         <div className="space-y-3">
           {segments.map((segment) => (
-            <div key={segment.id} className="p-3 bg-gray-100 rounded-lg">
+            <div key={segment.id} className="p-3 border border-black">
               <div className="flex justify-between items-start">
                 <div>
-                  <div className="text-sm font-medium text-black">
+                  <div className="text-sm font-medium">
                     {segment.airline} {segment.flight_number}
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm">
                     {formatAirportCode(segment.departure_airport)} to {formatAirportCode(segment.arrival_airport)}
                   </div>
                 </div>
-                <div className="text-sm text-gray-500 text-right">
+                <div className="text-sm text-right">
                   <div className="font-medium">{formatDateTime(segment.departure_time).date} {formatDateTime(segment.departure_time).time}</div>
                   <div>{formatDateTime(segment.arrival_time).date} {formatDateTime(segment.arrival_time).time}</div>
                   <div className="text-xs mt-1">Duration: {formatDuration(segment.duration_minutes)}</div>
@@ -138,12 +138,12 @@ export function FlightCard({ flight }: FlightCardProps) {
         </div>
         
         {flight.link && (
-          <div className="mt-4 pt-4 border-t border-gray-300">
+          <div className="mt-4 pt-4 border-t border-black">
             <a 
               href={flight.link} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-sm text-black hover:underline"
+              className="text-sm underline"
             >
               View booking details
             </a>

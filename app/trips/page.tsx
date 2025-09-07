@@ -13,22 +13,15 @@ export default function TripsPage() {
   if (error) {
     return (
       <ProtectedRoute>
-        <div className="h-screen w-screen flex items-center justify-center bg-white relative">
+        <div className="min-h-screen flex items-center justify-center bg-white">
           <SimpleHeader />
-                  <div className="text-center">
-          <h2 className="mb-2">
-            Error loading trips
-          </h2>
-          <p className="text-gray-500 mb-6">
-            {error.message}
-          </p>
-          <Button 
-            variant="white"
-            onClick={() => window.location.reload()}
-          >
-            Try Again
-          </Button>
-        </div>
+          <div className="text-center">
+            <h2 className="mb-2">Error loading trips</h2>
+            <p className="mb-4">{error.message}</p>
+            <Button onClick={() => window.location.reload()}>
+              Try Again
+            </Button>
+          </div>
         </div>
       </ProtectedRoute>
     );
@@ -36,42 +29,36 @@ export default function TripsPage() {
 
   return (
     <ProtectedRoute>
-      <div className="h-screen w-screen bg-gray-50 relative flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-white">
         <SimpleHeader />
         
-        {/* Empty State */}
-        {!isLoading && (!tripsResponse?.trips || tripsResponse.trips.length === 0) && (
-          <div className="text-center">
-            <h2 className="mb-2">
-              No trips yet
-            </h2>
-            <p className="text-gray-500 mb-6">
-              Start planning your first adventure by creating a new trip.
-            </p>
-            <Link href="/trips/new">
-              <Button variant="white">
-                create your first trip
-              </Button>
-            </Link>
-          </div>
-        )}
-
-        {/* Trips List */}
-        {tripsResponse?.trips && tripsResponse.trips.length > 0 && (
-          <div className="flex flex-col items-center">
-            <TripList 
-              trips={tripsResponse.trips} 
-              isLoading={isLoading} 
-            />
-            <div className="mt-8">
+        <div className="flex flex-col items-center justify-center p-8">
+          {/* Empty State */}
+          {!isLoading && (!tripsResponse?.trips || tripsResponse.trips.length === 0) && (
+            <div className="text-center">
+              <h2 className="mb-2">No trips yet</h2>
+              <p className="mb-4">Start planning your first adventure by creating a new trip.</p>
               <Link href="/trips/new">
-                <Button variant="white" size="lg">
-                  Add New Trip
-                </Button>
+                <Button>Create your first trip</Button>
               </Link>
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Trips List */}
+          {tripsResponse?.trips && tripsResponse.trips.length > 0 && (
+            <div className="flex flex-col items-center">
+              <TripList 
+                trips={tripsResponse.trips} 
+                isLoading={isLoading} 
+              />
+              <div className="mt-8">
+                <Link href="/trips/new">
+                  <Button size="lg">Add New Trip</Button>
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </ProtectedRoute>
   );

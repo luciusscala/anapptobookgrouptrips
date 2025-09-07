@@ -9,20 +9,16 @@ interface TripCardProps {
 
 export function TripCard({ trip }: TripCardProps) {
   return (
-    <Card className="min-h-[200px] w-[400px] flex flex-col justify-between">
+    <Card className="w-80">
       <CardHeader>
-        <CardTitle>
-          {trip.title}
-        </CardTitle>
+        <CardTitle>{trip.title}</CardTitle>
         <CardDescription>
           {trip.people_count} {trip.people_count === 1 ? 'person' : 'people'}
         </CardDescription>
       </CardHeader>
-      <CardContent className="mt-auto">
+      <CardContent>
         <Link href={`/trips/${trip.id}`} className="block w-full">
-          <Button variant="card" className="w-full" size="lg">
-            View Details
-          </Button>
+          <Button className="w-full">View Details</Button>
         </Link>
       </CardContent>
     </Card>

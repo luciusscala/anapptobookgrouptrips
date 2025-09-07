@@ -33,10 +33,10 @@ export default function TripDetailPage() {
   if (isLoading) {
     return (
       <ProtectedRoute>
-        <div className="h-screen w-screen bg-white relative flex flex-col items-center justify-center">
+        <div className="min-h-screen bg-white flex flex-col items-center justify-center">
           <SimpleHeader />
           <div className="text-center">
-            <p className="text-gray-500">Loading trip details...</p>
+            <p>Loading trip details...</p>
           </div>
         </div>
       </ProtectedRoute>
@@ -46,23 +46,17 @@ export default function TripDetailPage() {
   if (error) {
     return (
       <ProtectedRoute>
-        <div className="h-screen w-screen bg-white relative flex flex-col items-center justify-center">
+        <div className="min-h-screen bg-white flex flex-col items-center justify-center">
           <SimpleHeader />
           <div className="text-center">
-            <h2 className="mb-2">
-              Error loading trip
-            </h2>
-            <p className="text-gray-500 mb-6">
-              {error.message}
-            </p>
+            <h2 className="mb-2">Error loading trip</h2>
+            <p className="mb-4">{error.message}</p>
             <div className="flex gap-4 justify-center">
-              <Button variant="white" onClick={() => window.location.reload()}>
+              <Button onClick={() => window.location.reload()}>
                 Try Again
               </Button>
               <Link href="/trips">
-                <Button variant="link">
-                  Back to Trips
-                </Button>
+                <Button variant="link">Back to Trips</Button>
               </Link>
             </div>
           </div>
@@ -74,17 +68,13 @@ export default function TripDetailPage() {
   if (!tripResponse?.trip_data) {
     return (
       <ProtectedRoute>
-        <div className="h-screen w-screen bg-white relative flex flex-col items-center justify-center">
+        <div className="min-h-screen bg-white flex flex-col items-center justify-center">
           <SimpleHeader />
           <div className="text-center">
             <h2 className="mb-2">Trip not found</h2>
-            <p className="text-gray-500 mb-6">
-              The trip you&apos;re looking for doesn&apos;t exist.
-            </p>
+            <p className="mb-4">The trip you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/trips">
-              <Button variant="white">
-                Back to Trips
-              </Button>
+              <Button>Back to Trips</Button>
             </Link>
           </div>
         </div>
@@ -99,22 +89,20 @@ export default function TripDetailPage() {
 
   return (
     <ProtectedRoute>
-      <div className="h-screen w-screen bg-gray-50 relative">
+      <div className="min-h-screen bg-white">
         <SimpleHeader />
         <div className="p-8 max-w-4xl mx-auto">
           {/* Back Button */}
           <div className="mb-6">
             <Link href="/trips">
-              <Button variant="link">
-                Back to Trips
-              </Button>
+              <Button variant="link">Back to Trips</Button>
             </Link>
           </div>
           
           {/* Trip Title */}
           <div className="mb-8">
             <h1 className="mb-2">{trip.title}</h1>
-            <p className="text-gray-500">Created {formatDate(trip.created_at)}</p>
+            <p>Created {formatDate(trip.created_at)}</p>
           </div>
 
           {/* Tabs */}

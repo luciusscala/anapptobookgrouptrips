@@ -4,20 +4,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transform hover:scale-110 active:scale-95",
+  "inline-flex items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white disabled:opacity-50 disabled:cursor-not-allowed",
   {
     variants: {
       variant: {
-        default: "bg-gray-50 text-[#161616] hover:bg-gray-100 hover:shadow-2xl shadow-lg hover:shadow-xl",
-        white: "bg-white text-[#161616] hover:bg-gray-50 hover:shadow-2xl shadow-lg hover:shadow-xl",
-        card: "bg-gray-50 text-[#161616] hover:bg-gray-100 hover:shadow-2xl shadow-lg hover:shadow-xl", // For buttons on white cards
-        link: "text-current underline-offset-4 hover:underline hover:text-gray-600 bg-transparent shadow-none hover:scale-105",
+        default: "",
+        white: "",
+        card: "",
+        link: "border-none bg-transparent hover:bg-transparent hover:text-black underline",
       },
       size: {
-        default: "h-9 px-4 py-2 text-xs", /* h-10 -> h-9, text-sm -> text-xs */
-        sm: "h-7 rounded-md px-3 text-xs", /* h-8 -> h-7 */
-        lg: "h-10 rounded-lg px-6 text-sm", /* h-12 -> h-10, text-base -> text-sm */
-        icon: "h-9 w-9", /* h-10 -> h-9 */
+        default: "h-8 px-3 text-sm",
+        sm: "h-6 px-2 text-xs",
+        lg: "h-10 px-4 text-base",
+        icon: "h-8 w-8",
       },
     },
     defaultVariants: {

@@ -10,9 +10,9 @@ interface LodgeCardProps {
 export function LodgeCard({ lodge }: LodgeCardProps) {
   if (!lodge) {
     return (
-      <Card variant="nested">
+      <Card>
         <CardContent className="text-center">
-          <p className="text-gray-500">Loading lodge information...</p>
+          <p>Loading lodge information...</p>
         </CardContent>
       </Card>
     );
@@ -33,21 +33,19 @@ export function LodgeCard({ lodge }: LodgeCardProps) {
   };
 
   return (
-    <Card variant="nested">
+    <Card>
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-lg">
-              {lodge.name || 'Accommodation'}
-            </CardTitle>
+            <CardTitle>{lodge.name || 'Accommodation'}</CardTitle>
             <CardDescription>Booked</CardDescription>
           </div>
           <div className="text-right">
-            <div className="text-lg font-semibold text-black">
+            <div className="font-semibold">
               {lodge.total_cost ? formatCurrency(lodge.total_cost, lodge.currency) : 'Price TBD'}
             </div>
             {getPricePerNight() && (
-              <div className="text-sm text-gray-500">
+              <div className="text-sm">
                 {formatCurrency(getPricePerNight()!, lodge.currency)}/night
               </div>
             )}
@@ -58,41 +56,41 @@ export function LodgeCard({ lodge }: LodgeCardProps) {
       <CardContent>
         <div className="space-y-3">
           {lodge.location && (
-            <div className="text-sm text-gray-500">
+            <div className="text-sm">
               {lodge.location}
             </div>
           )}
           
           <div className="grid grid-cols-2 gap-4">
             {lodge.check_in && (
-              <div className="text-sm text-gray-500">
-                <div className="font-medium text-black">Check-in</div>
+              <div className="text-sm">
+                <div className="font-medium">Check-in</div>
                 <div>{formatDate(lodge.check_in)}</div>
               </div>
             )}
             
             {lodge.check_out && (
-              <div className="text-sm text-gray-500">
-                <div className="font-medium text-black">Check-out</div>
+              <div className="text-sm">
+                <div className="font-medium">Check-out</div>
                 <div>{formatDate(lodge.check_out)}</div>
               </div>
             )}
           </div>
           
           {lodge.number_of_guests && (
-            <div className="text-sm text-gray-500">
+            <div className="text-sm">
               {lodge.number_of_guests} guest{lodge.number_of_guests > 1 ? 's' : ''}
             </div>
           )}
         </div>
         
         {lodge.link && (
-          <div className="mt-4 pt-4 border-t border-gray-300">
+          <div className="mt-4 pt-4 border-t border-black">
             <a 
               href={lodge.link} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-sm text-black hover:underline"
+              className="text-sm underline"
             >
               View booking details
             </a>
