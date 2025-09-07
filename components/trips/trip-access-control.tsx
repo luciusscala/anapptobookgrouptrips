@@ -22,7 +22,7 @@ export function TripAccessControl({ membership, user, tripId }: TripAccessContro
     return (
       <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p className="text-blue-800 font-medium">You are the host of this trip</p>
-        <p className="text-blue-600 text-sm">You can manage all aspects of this trip</p>
+        <p className="text-blue-600 text-sm">You can manage all aspects of this trip and approve join requests</p>
       </div>
     );
   }
