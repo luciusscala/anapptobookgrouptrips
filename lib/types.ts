@@ -5,6 +5,8 @@ export interface Trip {
   title: string;
   host_id: string;
   created_at: string;
+  is_public: boolean;
+  requires_approval: boolean;
 }
 
 export interface TripPreview {
@@ -56,7 +58,11 @@ export interface Lodge {
 export interface TripPerson {
   id: string;
   trip_id: string;
-  name: string;
+  profile_id: string;
+  status: 'pending' | 'approved' | 'declined';
+  requested_at: string;
+  approved_at?: string;
+  approved_by?: string;
 }
 
 export interface CompleteTripData {
@@ -64,6 +70,34 @@ export interface CompleteTripData {
   flights: Flight[];
   lodges: Lodge[];
   people: TripPerson[];
+}
+
+// New types for join request system
+export interface JoinRequest {
+  id: string;
+  trip_id: string;
+  profile_id: string;
+  status: 'pending' | 'approved' | 'declined';
+  requested_at: string;
+  approved_at?: string;
+  approved_by?: string;
+  message?: string;
+}
+
+export interface TripMembership {
+  is_host: boolean;
+  is_member: boolean;
+  has_pending_request: boolean;
+  membership_status?: 'pending' | 'approved' | 'declined';
+  join_request_id?: string;
+}
+
+export interface PublicTripData {
+  trip: Trip;
+  flights: Flight[];
+  lodges: Lodge[];
+  people: TripPerson[];
+  membership?: TripMembership;
 }
 
 // API Response types
@@ -92,6 +126,28 @@ export interface CompleteTripResponse extends ApiResponse<CompleteTripData> {
   trip_data: CompleteTripData;
 }
 
+export interface PublicTripResponse {
+  trip: Trip;
+  flights: Flight[];
+  lodges: Lodge[];
+  people: TripPerson[];
+  membership?: TripMembership;
+}
+
+export interface TripMembershipResponse {
+  trip: Trip;
+  membership: TripMembership;
+}
+
+export interface JoinRequestResponse {
+  id: string;
+  trip_id: string;
+  profile_id: string;
+  status: string;
+  requested_at: string;
+  message?: string;
+}
+
 // Form data types
 export interface CreateTripData {
   host_id: string;
@@ -111,6 +167,15 @@ export interface AddLodgeData {
 export interface AddPersonData {
   name: string;
   trip_id: string;
+}
+
+export interface JoinRequestData {
+  profile_id: string;
+  message?: string;
+}
+
+export interface HostActionData {
+  host_id: string;
 }
 
 // Authentication types

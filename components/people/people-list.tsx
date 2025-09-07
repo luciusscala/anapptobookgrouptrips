@@ -30,10 +30,10 @@ export function PeopleList({ people }: PeopleListProps) {
             <div key={person.id} className="flex items-center space-x-3">
               <div className="h-8 w-8 border border-black flex items-center justify-center">
                 <span className="text-sm font-medium">
-                  {person.name.charAt(0).toUpperCase()}
+                  {person.profile_id.charAt(0).toUpperCase()}
                 </span>
               </div>
-              <span className="text-sm">{person.name}</span>
+              <span className="text-sm">User {person.profile_id.slice(0, 8)}</span>
             </div>
           ))}
         </div>

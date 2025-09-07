@@ -1,14 +1,19 @@
 import { 
   TripsResponse,
   CompleteTripResponse,
+  PublicTripResponse,
+  TripMembershipResponse,
+  JoinRequestResponse,
   AddFlightData,
   AddLodgeData,
   AddPersonData,
   CreateTripData,
+  JoinRequestData,
   ApiError,
   Flight,
   Lodge,
-  TripPerson
+  TripPerson,
+  JoinRequest
 } from './types';
 import { supabase } from './supabase';
 
@@ -93,6 +98,43 @@ class ApiClient {
   async getTrip(tripId: string): Promise<CompleteTripResponse> {
     // Use backend API to get complete trip data
     return this.request<CompleteTripResponse>(`/api/trip/${tripId}`);
+  }
+
+  // New public trip endpoints
+  async getPublicTrip(tripId: string, userId?: string): Promise<PublicTripResponse> {
+    const url = userId 
+      ? `/api/trips/${tripId}/public?profile_id=${userId}`
+      : `/api/trips/${tripId}/public`;
+    return this.request<PublicTripResponse>(url);
+  }
+
+  async getTripMembership(tripId: string, userId: string): Promise<TripMembershipResponse> {
+    return this.request<TripMembershipResponse>(`/api/trips/${tripId}/membership?profile_id=${userId}`);
+  }
+
+  async requestToJoinTrip(tripId: string, data: JoinRequestData): Promise<JoinRequestResponse> {
+    return this.request<JoinRequestResponse>(`/api/trips/${tripId}/join-request`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getJoinRequests(tripId: string, hostId: string): Promise<{ status: string; requests: JoinRequest[] }> {
+    return this.request(`/api/trips/${tripId}/join-requests?host_id=${hostId}`);
+  }
+
+  async approveJoinRequest(tripId: string, requestId: string, hostId: string): Promise<{ status: string; message: string }> {
+    return this.request(`/api/trips/${tripId}/approve/${requestId}`, {
+      method: 'POST',
+      body: JSON.stringify({ host_id: hostId }),
+    });
+  }
+
+  async declineJoinRequest(tripId: string, requestId: string, hostId: string): Promise<{ status: string; message: string }> {
+    return this.request(`/api/trips/${tripId}/decline/${requestId}`, {
+      method: 'POST',
+      body: JSON.stringify({ host_id: hostId }),
+    });
   }
 
   // Specific data endpoints

@@ -139,7 +139,7 @@ export function formatDate(dateString: string): string {
   });
 }
 
-export function generateTripSummary(data: { flights: any[]; lodges: any[]; people: any[] }): string {
+export function generateTripSummary(data: { flights: unknown[]; lodges: unknown[]; people: unknown[] }): string {
   const { flights, lodges, people } = data;
   const parts = [];
   
