@@ -21,6 +21,7 @@ import Link from 'next/link';
 import { TripAccessControl } from '@/components/trips/trip-access-control';
 import { HostControls } from '@/components/trips/host-controls';
 import { MemberControls } from '@/components/trips/member-controls';
+import { TripCosts } from '@/components/trips/trip-costs';
 
 export default function TripDetailPage() {
   const params = useParams();
@@ -103,11 +104,12 @@ export default function TripDetailPage() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="flights">Flights</TabsTrigger>
             <TabsTrigger value="lodging">Lodging</TabsTrigger>
             <TabsTrigger value="people">People</TabsTrigger>
+            <TabsTrigger value="costs">Costs</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -235,7 +237,12 @@ export default function TripDetailPage() {
               <CardContent>
                 <div className="mb-6">
                   {people.length > 0 ? (
-                    <PeopleList people={people} />
+                    <PeopleList 
+                      people={people} 
+                      tripId={tripId}
+                      isHost={membership?.is_host}
+                      hostId={user?.id}
+                    />
                   ) : (
                     <div className="p-6 text-center">
                       <h3 className="mb-2">No travelers added yet</h3>
@@ -254,6 +261,18 @@ export default function TripDetailPage() {
                     </div>
                   </>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Costs Tab */}
+          <TabsContent value="costs" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Trip Costs</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <TripCosts tripId={tripId} />
               </CardContent>
             </Card>
           </TabsContent>

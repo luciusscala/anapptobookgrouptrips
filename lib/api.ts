@@ -211,6 +211,144 @@ class ApiClient {
       return { status: 'error', message: `Connection error: ${error instanceof Error ? error.message : 'Unknown error'}` };
     }
   }
+
+  // Payment endpoints
+  async removeParticipant(tripId: string, profileId: string, hostId: string): Promise<{ status: string; message: string }> {
+    return this.request(`/api/trips/${tripId}/remove-participant/${profileId}?host_id=${hostId}`, {
+      method: 'DELETE'
+    });
+  }
+
+  async getTripPaymentInfo(tripId: string): Promise<{
+    trip: { id: string; title: string; host_id: string };
+    current_participants: number;
+    authorized_payments: number;
+    min_participants: number;
+    threshold_met: boolean;
+    participants: Array<{
+      profile_id: string;
+      payment_status: string;
+      amount_cents: number;
+      currency: string;
+    }>;
+    config?: {
+      id: string;
+      total_cost_cents: number;
+      min_participants: number;
+      virtual_card_id?: string;
+      payment_threshold_met: boolean;
+    };
+  }> {
+    return this.request(`/api/trips/${tripId}/payment-info`);
+  }
+
+  async joinTripWithPayment(tripId: string, profileId: string): Promise<{
+    client_secret: string;
+    amount_cents: number;
+    currency: string;
+  }> {
+    return this.request(`/api/trips/${tripId}/join-with-payment?profile_id=${profileId}`, {
+      method: 'POST'
+    });
+  }
+
+  async checkVirtualCard(tripId: string, hostId: string): Promise<{
+    card_id: string;
+    last_four: string;
+    brand: string;
+    exp_month: number;
+    exp_year: number;
+    amount_cents: number;
+    already_exists: boolean;
+  }> {
+    return this.request(`/api/trips/${tripId}/check-virtual-card?host_id=${hostId}`, {
+      method: 'POST'
+    });
+  }
+
+  async setupTripPayments(tripId: string, hostId: string, totalCostCents: number, minParticipants: number): Promise<{
+    status: string;
+    message: string;
+    config_id: string;
+  }> {
+    return this.request(`/api/trips/${tripId}/setup-payments?host_id=${hostId}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        total_cost_cents: totalCostCents,
+        min_participants: minParticipants
+      })
+    });
+  }
+
+  // Cost endpoints
+  async getTripFlightCosts(tripId: string): Promise<{
+    status: string;
+    flight_costs: {
+      trip_id: string;
+      total_cost: number;
+      currency: string;
+      flight_count: number;
+      flights: Array<{
+        id: string;
+        price: number;
+        currency: string;
+      }>;
+    };
+  }> {
+    return this.request(`/api/trip/${tripId}/costs/flights`);
+  }
+
+  async getTripAccommodationCosts(tripId: string): Promise<{
+    status: string;
+    accommodation_costs: {
+      trip_id: string;
+      total_cost: number;
+      currency: string;
+      accommodation_count: number;
+      accommodations: Array<{
+        id: string;
+        name: string;
+        cost: number;
+        currency: string;
+      }>;
+    };
+  }> {
+    return this.request(`/api/trip/${tripId}/costs/accommodations`);
+  }
+
+  async getTripTotalCosts(tripId: string): Promise<{
+    status: string;
+    total_costs: {
+      trip_id: string;
+      total_cost: number;
+      currency: string;
+      breakdown: {
+        flights: {
+          total_cost: number;
+          currency: string;
+          count: number;
+        };
+        accommodations: {
+          total_cost: number;
+          currency: string;
+          count: number;
+        };
+      };
+      flight_details: Array<{
+        id: string;
+        price: number;
+        currency: string;
+      }>;
+      accommodation_details: Array<{
+        id: string;
+        name: string;
+        cost: number;
+        currency: string;
+      }>;
+    };
+  }> {
+    return this.request(`/api/trip/${tripId}/costs/total`);
+  }
 }
 
 // Export singleton instance

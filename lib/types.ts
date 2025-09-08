@@ -63,6 +63,10 @@ export interface TripPerson {
   requested_at: string;
   approved_at?: string;
   approved_by?: string;
+  payment_status?: 'pending' | 'authorized' | 'captured' | 'voided' | 'failed';
+  payment_intent_id?: string;
+  amount_cents?: number;
+  currency?: string;
 }
 
 export interface CompleteTripData {
@@ -189,6 +193,42 @@ export interface User {
 export interface AuthState {
   user: User | null;
   loading: boolean;
+}
+
+// Simple payment types for core functionality only
+export interface TripPaymentInfo {
+  trip: {
+    id: string;
+    title: string;
+    host_id: string;
+  };
+  current_participants: number;
+  authorized_payments: number;
+  min_participants: number;
+  threshold_met: boolean;
+  participants: Array<{
+    profile_id: string;
+    payment_status: string;
+    amount_cents: number;
+    currency: string;
+  }>;
+  config?: {
+    id: string;
+    total_cost_cents: number;
+    min_participants: number;
+    virtual_card_id?: string;
+    payment_threshold_met: boolean;
+  };
+}
+
+export interface VirtualCard {
+  card_id: string;
+  last_four: string;
+  brand: string;
+  exp_month: number;
+  exp_year: number;
+  amount_cents: number;
+  already_exists: boolean;
 }
 
 // Utility types

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/auth-context';
 import { JoinRequestManagement } from './join-request-management';
+import { SimpleTripPayments } from '@/components/payments/simple-trip-payments';
 
 interface HostControlsProps {
   tripId: string;
@@ -43,6 +44,18 @@ export function HostControls({ tripId }: HostControlsProps) {
               >
                 Copy Link
               </Button>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-2">Payment Management</h4>
+              <p className="text-gray-600 text-sm mb-4">
+                Manage trip payments, participants, and virtual cards
+              </p>
+              <SimpleTripPayments 
+                tripId={tripId} 
+                userId={user.id} 
+                isHost={true} 
+              />
             </div>
           </div>
         </CardContent>

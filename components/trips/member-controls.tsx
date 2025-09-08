@@ -2,12 +2,18 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/contexts/auth-context';
+import { SimpleTripPayments } from '@/components/payments/simple-trip-payments';
 
 interface MemberControlsProps {
   tripId: string;
 }
 
-export function MemberControls({ }: MemberControlsProps) {
+export function MemberControls({ tripId }: MemberControlsProps) {
+  const { user } = useAuth();
+  
+  if (!user) return null;
+
   return (
     <div className="mt-8">
       <Card>
@@ -36,6 +42,18 @@ export function MemberControls({ }: MemberControlsProps) {
               <p className="text-gray-600 text-sm">
                 You can add flights, lodging, and invite others to this trip
               </p>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-2">Payment Status</h4>
+              <p className="text-gray-600 text-sm mb-4">
+                View your payment status and make payments for this trip
+              </p>
+              <SimpleTripPayments 
+                tripId={tripId} 
+                userId={user.id} 
+                isHost={false} 
+              />
             </div>
           </div>
         </CardContent>
