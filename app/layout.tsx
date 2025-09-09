@@ -3,6 +3,7 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
 import { AuthProvider } from "@/contexts/auth-context";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { ToastProvider } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
   title: "App",
@@ -18,11 +19,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ErrorBoundary>
-          <AuthProvider>
-            <QueryProvider>
-              {children}
-            </QueryProvider>
-          </AuthProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <QueryProvider>
+                {children}
+              </QueryProvider>
+            </AuthProvider>
+          </ToastProvider>
         </ErrorBoundary>
       </body>
     </html>

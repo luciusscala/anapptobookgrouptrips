@@ -6,10 +6,14 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
+import { StatCard } from '@/components/ui/progress';
 import { Users, CreditCard, CheckCircle, Clock, UserMinus, AlertTriangle } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { usePaymentOperations } from '@/hooks/usePaymentOperations';
 import { PaymentInfoSkeleton } from '@/components/ui/loading-skeleton';
+import { useToast } from '@/components/ui/toast';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -102,12 +106,12 @@ function PaymentFormInner({ tripId, userId, onSuccess, onError }: {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1">Cardholder Name</label>
-            <input
+            <Input
               type="text"
               placeholder="John Doe"
               value={billingName}
               onChange={(e) => setBillingName(e.target.value)}
-              className="w-full p-2 border rounded-md"
+              className="w-full"
               required
             />
           </div>
@@ -152,6 +156,8 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
   const {
     setupPayments
   } = usePaymentOperations();
+  
+  const { success, error: showError } = useToast();
 
   const loadPaymentInfo = useCallback(async () => {
     try {
@@ -186,6 +192,7 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
 
   const handlePaymentSuccess = () => {
     setShowPaymentForm(false);
+    success("payment authorized", "your payment has been successfully authorized");
     loadPaymentInfo(); // Refresh data
   };
 
@@ -193,8 +200,10 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
     try {
       const data = await apiClient.checkVirtualCard(tripId, userId);
       setVirtualCard(data);
+      success("virtual card issued", "your virtual card is ready for booking");
     } catch (error) {
       console.error('Failed to issue virtual card:', error);
+      showError("failed to issue card", "unable to create virtual card. please try again.");
     }
   };
 
@@ -213,13 +222,14 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
         await loadPaymentInfo();
         // Clear virtual card if threshold no longer met
         setVirtualCard(null);
+        success("participant removed", "participant has been removed from the trip");
       } else {
-        alert(`Failed to remove participant: ${result.message}`);
+        showError("failed to remove participant", result.message);
       }
     } catch (error) {
       console.error('Failed to remove participant:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to remove participant. Please try again.';
-      alert(errorMessage);
+      showError("failed to remove participant", errorMessage);
     } finally {
       setRemovingParticipant(null);
     }
@@ -230,17 +240,17 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
       await setupPayments(tripId, userId, setupData.total_cost_cents, setupData.min_participants);
       setShowSetupForm(false);
       await loadPaymentInfo(); // Refresh data
-      alert('Payment configuration created successfully! You can now make your payment to join the trip.');
+      success("payment setup complete", "payment configuration created successfully! you can now make your payment to join the trip.");
     } catch (error) {
       console.error('Failed to setup payments:', error);
       if (error instanceof Error && error.message.includes('already exists')) {
         // Config already exists, just refresh the data
         await loadPaymentInfo();
         setShowSetupForm(false);
-        alert('Payment configuration already exists and has been updated.');
+        success("payment setup updated", "payment configuration already exists and has been updated.");
       } else {
         const errorMessage = error instanceof Error ? error.message : 'Failed to setup payments. Please try again.';
-        alert(errorMessage);
+        showError("setup failed", errorMessage);
       }
     }
   };
@@ -305,7 +315,7 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
                   <label className="block text-sm font-medium mb-2">
                     Total Trip Cost (USD)
                   </label>
-                  <input
+                  <Input
                     type="number"
                     value={isNaN(setupData.total_cost_cents / 100) ? '' : (setupData.total_cost_cents / 100).toString()}
                     onChange={(e) => {
@@ -317,7 +327,7 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
                         });
                       }
                     }}
-                    className="w-full p-2 border rounded-md"
+                    className="w-full"
                     placeholder="100.00"
                     min="0"
                     step="0.01"
@@ -327,14 +337,14 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
                   <label className="block text-sm font-medium mb-2">
                     Minimum Participants
                   </label>
-                  <input
+                  <Input
                     type="number"
                     value={setupData.min_participants}
                     onChange={(e) => setSetupData({
                       ...setupData,
                       min_participants: parseInt(e.target.value)
                     })}
-                    className="w-full p-2 border rounded-md"
+                    className="w-full"
                     placeholder="2"
                     min="2"
                   />
@@ -362,29 +372,53 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-2xl font-bold">{paymentInfo.current_participants}</div>
-            <div className="text-sm text-gray-600">
-              of {paymentInfo.min_participants} minimum
-            </div>
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <StatCard
+              title="participants"
+              value={paymentInfo.current_participants}
+              subtitle={`of ${paymentInfo.min_participants} minimum`}
+            />
+            <StatCard
+              title="authorized payments"
+              value={paymentInfo.authorized_payments}
+              subtitle="ready to book"
+            />
           </div>
           
-          <div className="flex items-center gap-2 mb-4">
-            <Badge variant={paymentInfo.threshold_met ? "default" : "secondary"}>
-              {paymentInfo.threshold_met ? "Threshold Met!" : "Threshold Not Met"}
-            </Badge>
-            <span className="text-sm text-gray-600">
-              {paymentInfo.authorized_payments} authorized payments
-            </span>
-          </div>
-
-          {paymentInfo.threshold_met && (
-            <div className="p-3 bg-green-50 rounded-lg">
-              <p className="text-green-800 text-sm">
-                🎉 Trip threshold reached! Virtual card can be issued for booking.
-              </p>
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-grey-700">threshold progress</span>
+                <span className="text-sm text-grey-600">
+                  {paymentInfo.current_participants}/{paymentInfo.min_participants}
+                </span>
+              </div>
+              <Progress
+                value={paymentInfo.current_participants}
+                max={paymentInfo.min_participants}
+                variant={paymentInfo.threshold_met ? "success" : "default"}
+                showLabel={false}
+                size="md"
+              />
             </div>
-          )}
+            
+            <div className="flex items-center gap-2">
+              <Badge variant={paymentInfo.threshold_met ? "default" : "secondary"}>
+                {paymentInfo.threshold_met ? "threshold met!" : "threshold not met"}
+              </Badge>
+            </div>
+
+            {paymentInfo.threshold_met && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <p className="text-green-800 text-sm font-medium">
+                    trip threshold reached! virtual card can be issued for booking.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
           
           {/* Debug refresh button */}
           <div className="mt-4">

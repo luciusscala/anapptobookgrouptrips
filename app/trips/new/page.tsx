@@ -44,38 +44,38 @@ export default function NewTripPage() {
 
   return (
     <ProtectedRoute>
-      <div className="h-screen w-screen bg-gray-50 relative">
+      <div className="h-screen w-screen bg-white relative">
         <SimpleHeader />
         <div className="p-8 max-w-2xl mx-auto">
           {/* Back Button */}
           <div className="mb-6">
-            <Link href="/trips">
-              <Button variant="link">
-                Back to Trips
-              </Button>
-            </Link>
+            <Button asChild variant="outline">
+              <Link href="/trips">
+                back to trips
+              </Link>
+            </Button>
           </div>
           
           {/* Header */}
           <div className="mb-8">
             <h1 className="mb-2">
-              Create New Trip
+              create new trip
             </h1>
-            <p className="text-gray-500">
-              Start planning your next adventure
+            <p className="text-grey-600">
+              start planning your next adventure
             </p>
           </div>
 
           {/* Form */}
           <Card className="mb-8">
             <CardHeader>
-              <CardTitle>Trip Details</CardTitle>
+              <CardTitle>trip details</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="tripTitle" className="block text-sm font-medium text-current mb-2">
-                    Trip Title
+                    trip title
                   </label>
                   <Input
                     id="tripTitle"
@@ -93,14 +93,14 @@ export default function NewTripPage() {
                     variant="white"
                     disabled={createTrip.isPending || !tripTitle.trim()}
                   >
-                    {createTrip.isPending ? 'Creating Trip...' : 'Create Trip'}
+                    {createTrip.isPending ? 'creating trip...' : 'create trip'}
                   </Button>
                   <Button 
                     type="button" 
                     onClick={() => router.back()}
                     variant="link"
                   >
-                    Cancel
+                    cancel
                   </Button>
                 </div>
               </form>
@@ -110,28 +110,28 @@ export default function NewTripPage() {
           {/* Next Steps */}
           <Card>
             <CardHeader>
-              <CardTitle>What&apos;s next?</CardTitle>
+              <CardTitle>what's next?</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="mb-1">Add Flights</h4>
-                  <p className="text-sm text-gray-500">
-                    Paste your flight booking links to automatically extract all the details
+                <div className="p-4 bg-grey-50 rounded-lg">
+                  <h4 className="mb-1">add flights</h4>
+                  <p className="text-sm text-grey-600">
+                    paste your flight booking links to automatically extract all the details
                   </p>
                 </div>
                 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="mb-1">Book Lodging</h4>
-                  <p className="text-sm text-gray-500">
-                    Add hotel and accommodation bookings to track your stay
+                <div className="p-4 bg-grey-50 rounded-lg">
+                  <h4 className="mb-1">book lodging</h4>
+                  <p className="text-sm text-grey-600">
+                    add hotel and accommodation bookings to track your stay
                   </p>
                 </div>
                 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="mb-1">Invite Travelers</h4>
-                  <p className="text-sm text-gray-500">
-                    Add your travel companions to keep everyone organized
+                <div className="p-4 bg-grey-50 rounded-lg">
+                  <h4 className="mb-1">invite travelers</h4>
+                  <p className="text-sm text-grey-600">
+                    add your travel companions to keep everyone organized
                   </p>
                 </div>
               </div>

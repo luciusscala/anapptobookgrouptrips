@@ -36,7 +36,7 @@ interface TabsListProps {
 export function TabsList({ children, className }: TabsListProps) {
   return (
     <div className={cn(
-      'inline-flex h-8 items-center justify-center border border-black p-1',
+      'inline-flex h-10 items-center justify-center bg-gray-100 rounded-lg p-1',
       className
     )}>
       {children}
@@ -62,10 +62,10 @@ export function TabsTrigger({ value, children, className }: TabsTriggerProps) {
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap px-3 py-1 text-sm font-medium focus:outline-none disabled:opacity-50',
+        'inline-flex items-center justify-center whitespace-nowrap px-4 py-2 text-sm font-medium rounded-md transition-all duration-150 ease-in-out focus:outline-none disabled:opacity-50 hover-scale',
         isActive 
-          ? 'bg-black text-white' 
-          : 'hover:bg-gray-100',
+          ? 'bg-gray-800 text-white shadow-sm' 
+          : 'text-gray-600 hover:text-black hover:bg-gray-50',
         className
       )}
       onClick={() => setActiveTab(value)}
@@ -94,7 +94,7 @@ export function TabsContent({ value, children, className }: TabsContentProps) {
   }
 
   return (
-    <div className={cn('mt-4', className)}>
+    <div className={cn('mt-6', className)}>
       {children}
     </div>
   );

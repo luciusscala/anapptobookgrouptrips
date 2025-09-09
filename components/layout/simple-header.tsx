@@ -7,11 +7,12 @@ export function SimpleHeader() {
   const { signOut } = useAuth();
 
   return (
-    <header className="absolute top-0 right-0 p-4 z-10">
+    <header className="absolute top-0 right-0 p-8 z-10">
       <Button 
         onClick={() => signOut()}
+        className="hover-scale"
       >
-        Sign Out
+        sign out
       </Button>
     </header>
   );
