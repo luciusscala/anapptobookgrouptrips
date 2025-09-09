@@ -10,13 +10,12 @@ import { AddLodgeForm } from '@/components/lodging/add-lodge-form';
 import { SimpleHeader } from '@/components/layout/simple-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ErrorState, EmptyState, LoadingState } from '@/components/ui/error-state';
 import { formatDate } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Globe, Plane, Home, Users, DollarSign, Settings } from 'lucide-react';
 
 // New components for conditional rendering
 import { TripAccessControl } from '@/components/trips/trip-access-control';
@@ -36,7 +35,7 @@ export default function TripDetailPage() {
     return (
       <div className="min-h-screen bg-white">
         <SimpleHeader />
-        <div className="container mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <LoadingState message="loading trip details..." />
         </div>
       </div>
@@ -47,7 +46,7 @@ export default function TripDetailPage() {
     return (
       <div className="min-h-screen bg-white">
         <SimpleHeader />
-        <div className="container mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <ErrorState
             title="error loading trip"
             message={error.message}
@@ -68,7 +67,7 @@ export default function TripDetailPage() {
     return (
       <div className="min-h-screen bg-white">
         <SimpleHeader />
-        <div className="container mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <ErrorState
             title="trip not found"
             message="the trip you're looking for doesn't exist"
@@ -76,7 +75,7 @@ export default function TripDetailPage() {
           />
           <div className="mt-6 text-center">
             <Link href="/trips">
-              <Button>back to trips</Button>
+              <Button variant="primary">back to trips</Button>
             </Link>
           </div>
         </div>
@@ -93,12 +92,12 @@ export default function TripDetailPage() {
   return (
     <div className="min-h-screen bg-white">
       <SimpleHeader />
-      <div className="p-8 max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Trip Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <Link href="/trips">
-              <Button variant="default" size="sm" className="flex items-center gap-2">
+              <Button variant="primary" size="sm" className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
                 Back to Trips
               </Button>
@@ -120,12 +119,30 @@ export default function TripDetailPage() {
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="overview">overview</TabsTrigger>
-            <TabsTrigger value="flights">flights</TabsTrigger>
-            <TabsTrigger value="lodging">lodging</TabsTrigger>
-            <TabsTrigger value="people">people</TabsTrigger>
-            <TabsTrigger value="costs">costs</TabsTrigger>
-            <TabsTrigger value="controls">actions</TabsTrigger>
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <Globe className="w-4 h-4" />
+              overview
+            </TabsTrigger>
+            <TabsTrigger value="flights" className="flex items-center gap-2">
+              <Plane className="w-4 h-4" />
+              flights
+            </TabsTrigger>
+            <TabsTrigger value="lodging" className="flex items-center gap-2">
+              <Home className="w-4 h-4" />
+              lodging
+            </TabsTrigger>
+            <TabsTrigger value="people" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              people
+            </TabsTrigger>
+            <TabsTrigger value="costs" className="flex items-center gap-2">
+              <DollarSign className="w-4 h-4" />
+              costs
+            </TabsTrigger>
+            <TabsTrigger value="controls" className="flex items-center gap-2">
+              <Settings className="w-4 h-4" />
+              actions
+            </TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -137,16 +154,16 @@ export default function TripDetailPage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <div className="text-label mb-1">trip title</div>
-                    <div className="text-value">{trip.title}</div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">trip title</div>
+                    <div className="text-base font-medium text-black">{trip.title}</div>
                   </div>
                   <div>
-                    <div className="text-label mb-1">created</div>
-                    <div className="text-value">{formatDate(trip.created_at)}</div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">created</div>
+                    <div className="text-base font-medium text-black">{formatDate(trip.created_at)}</div>
                   </div>
                   <div>
-                    <div className="text-label mb-1">travelers</div>
-                    <div className="text-value">{people.length} {people.length === 1 ? 'person' : 'people'}</div>
+                    <div className="text-xs font-medium text-gray-500 mb-1">travelers</div>
+                    <div className="text-base font-medium text-black">{people.length} {people.length === 1 ? 'person' : 'people'}</div>
                   </div>
                 </div>
               </CardContent>
@@ -159,8 +176,8 @@ export default function TripDetailPage() {
                   <CardTitle>flights</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-display text-black mb-1">{flights.length}</div>
-                  <div className="text-body-sm text-grey-600">{flights.length} flight{flights.length !== 1 ? 's' : ''} booked</div>
+                  <div className="text-3xl font-bold text-black mb-1">{flights.length}</div>
+                  <div className="text-sm text-gray-600">{flights.length} flight{flights.length !== 1 ? 's' : ''} booked</div>
                 </CardContent>
               </Card>
               
@@ -169,8 +186,8 @@ export default function TripDetailPage() {
                   <CardTitle>lodging</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-display text-black mb-1">{lodges.length}</div>
-                  <div className="text-body-sm text-grey-600">{lodges.length} place{lodges.length !== 1 ? 's' : ''} booked</div>
+                  <div className="text-3xl font-bold text-black mb-1">{lodges.length}</div>
+                  <div className="text-sm text-gray-600">{lodges.length} place{lodges.length !== 1 ? 's' : ''} booked</div>
                 </CardContent>
               </Card>
             </div>
@@ -191,6 +208,8 @@ export default function TripDetailPage() {
                   ) : (
                     <EmptyState
                       title="no flights added yet"
+                      message="add your flight bookings to keep everyone organized"
+                      illustration={<Plane className="w-12 h-12 text-gray-400" />}
                     />
                   )}
                 </div>
@@ -218,6 +237,8 @@ export default function TripDetailPage() {
                   ) : (
                     <EmptyState
                       title="no lodging added yet"
+                      message="add your accommodation bookings to track your stay"
+                      illustration={<Home className="w-12 h-12 text-gray-400" />}
                     />
                   )}
                 </div>
@@ -248,6 +269,8 @@ export default function TripDetailPage() {
                   ) : (
                     <EmptyState
                       title="no travelers added yet"
+                      message="invite your travel companions to keep everyone organized"
+                      illustration={<Users className="w-12 h-12 text-gray-400" />}
                     />
                   )}
                 </div>

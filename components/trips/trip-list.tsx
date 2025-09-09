@@ -21,8 +21,8 @@ export function TripList({ trips, isLoading }: TripListProps) {
   if (trips.length === 0) {
     return (
       <div className="text-center py-16">
-        <div className="text-grey-500 text-xl mb-6">no trips found</div>
-        <p className="text-grey-400">create your first trip to get started</p>
+        <div className="text-gray-500 text-xl mb-6">no trips found</div>
+        <p className="text-gray-400">create your first trip to get started</p>
       </div>
     );
   }

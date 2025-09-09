@@ -11,7 +11,7 @@ interface TripCardProps {
 
 export function TripCard({ trip }: TripCardProps) {
   return (
-    <Card className="w-80">
+    <Card className="w-80 hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
       <CardHeader>
         <div className="flex items-start justify-between mb-3">
           <CardTitle className="text-lg leading-tight">
@@ -28,7 +28,7 @@ export function TripCard({ trip }: TripCardProps) {
         </div>
         
         <div className="space-y-2">
-          <div className="flex items-center text-sm text-grey-600">
+          <div className="flex items-center text-sm text-gray-600">
             <Users className="h-4 w-4 mr-2" />
             <span>
               {trip.people_count} {trip.people_count === 1 ? 'person' : 'people'}
@@ -38,7 +38,7 @@ export function TripCard({ trip }: TripCardProps) {
       </CardHeader>
       
       <CardContent>
-        <Button asChild className="w-full">
+        <Button asChild variant="primary" className="w-full">
           <Link href={`/trips/${trip.id}`}>
             view details
           </Link>

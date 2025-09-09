@@ -30,8 +30,8 @@ const errorConfig = {
   },
   "not-found": {
     icon: AlertCircle,
-    iconColor: "text-grey-600",
-    iconBg: "bg-grey-50",
+    iconColor: "text-gray-600",
+    iconBg: "bg-gray-50",
     title: "not found",
     message: "the resource you're looking for doesn't exist.",
   },
@@ -59,7 +59,7 @@ export function ErrorState({
         </CardTitle>
       </CardHeader>
       <CardContent className="text-center">
-        <p className="text-grey-600 mb-6 text-sm leading-relaxed">
+        <p className="text-gray-600 mb-6 text-sm leading-relaxed">
           {message || config.message}
         </p>
         {onRetry && (
@@ -77,27 +77,38 @@ export function ErrorState({
 interface EmptyStateProps {
   title: string;
   message: string;
+  illustration?: React.ReactNode;
   action?: {
     label: string;
     onClick: () => void;
   };
+  variant?: "default" | "error" | "success";
   className?: string;
 }
 
 export function EmptyState({
   title,
   message,
+  illustration,
   action,
+  variant = "default",
   className,
 }: EmptyStateProps) {
+  const variantStyles = {
+    default: "bg-gray-50",
+    error: "bg-red-50",
+    success: "bg-green-50",
+  };
+
   return (
-    <div className={cn("text-center py-12", className)}>
-      <div className="mx-auto mb-4 p-3 bg-grey-100 rounded-full w-fit">
-        <div className="h-6 w-6 text-grey-400" />
+    <div className={cn("text-center py-16 px-6", className)}>
+      <div className={cn("mx-auto mb-6 p-4 rounded-full w-fit", variantStyles[variant])}>
+        {illustration || <div className="w-12 h-12 bg-gray-200 rounded-full" />}
       </div>
-      <h3 className="text-lg font-semibold text-black mb-6">{title}</h3>
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-600 mb-8 max-w-md mx-auto">{message}</p>
       {action && (
-        <Button onClick={action.onClick} className="hover-scale">
+        <Button onClick={action.onClick} variant="primary" size="lg" className="hover-scale">
           {action.label}
         </Button>
       )}
@@ -114,8 +125,8 @@ interface LoadingStateProps {
 export function LoadingState({ message = "loading...", className }: LoadingStateProps) {
   return (
     <div className={cn("flex flex-col items-center justify-center py-12", className)}>
-      <div className="animate-spin rounded-full h-8 w-8 border-2 border-grey-300 border-t-black mb-4" />
-      <p className="text-grey-600 text-sm">{message}</p>
+      <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-blue-600 mb-4" />
+      <p className="text-gray-600 text-sm">{message}</p>
     </div>
   );
 }

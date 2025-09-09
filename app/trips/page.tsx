@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ErrorState, EmptyState } from '@/components/ui/error-state';
 import Link from 'next/link';
-import { AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, RefreshCw, Plane } from 'lucide-react';
 
 export default function TripsPage() {
   const { data: tripsResponse, isLoading, error } = useTrips();
@@ -18,7 +18,7 @@ export default function TripsPage() {
       <ProtectedRoute>
         <div className="min-h-screen bg-white">
           <SimpleHeader />
-          <div className="container mx-auto px-6 py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <ErrorState
               title="error loading trips"
               message={error.message}
@@ -36,7 +36,7 @@ export default function TripsPage() {
       <div className="min-h-screen bg-white">
         <SimpleHeader />
         
-        <div className="container mx-auto px-8 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Page Header */}
           <div className="mb-16">
             <h1 className="text-4xl font-bold text-black">my trips</h1>
@@ -54,6 +54,7 @@ export default function TripsPage() {
             <EmptyState
               title="no trips yet"
               message="start planning your next adventure by creating your first trip"
+              illustration={<Plane className="w-16 h-16 text-gray-300" />}
               action={{
                 label: "create your first trip",
                 onClick: () => window.location.href = "/trips/new"
@@ -69,7 +70,7 @@ export default function TripsPage() {
                 isLoading={false} 
               />
               <div className="text-center pt-8">
-                <Button asChild size="lg" variant="outline" className="hover-scale">
+                <Button asChild size="lg" variant="secondary" className="hover-scale">
                   <Link href="/trips/new">
                     add new trip
                   </Link>

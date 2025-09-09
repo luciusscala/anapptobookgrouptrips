@@ -46,7 +46,7 @@ export default function NewTripPage() {
     <ProtectedRoute>
       <div className="h-screen w-screen bg-white relative">
         <SimpleHeader />
-        <div className="p-8 max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Back Button */}
           <div className="mb-6">
             <Button asChild variant="outline">
@@ -61,7 +61,7 @@ export default function NewTripPage() {
             <h1 className="mb-2">
               create new trip
             </h1>
-            <p className="text-grey-600">
+            <p className="text-gray-600">
               start planning your next adventure
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function NewTripPage() {
                 <div className="flex gap-4 pt-4">
                   <Button 
                     type="submit" 
-                    variant="white"
+                    variant="primary"
                     disabled={createTrip.isPending || !tripTitle.trim()}
                   >
                     {createTrip.isPending ? 'creating trip...' : 'create trip'}
@@ -114,23 +114,23 @@ export default function NewTripPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="p-4 bg-grey-50 rounded-lg">
+                <div className="p-4 bg-gray-50 rounded-lg">
                   <h4 className="mb-1">add flights</h4>
-                  <p className="text-sm text-grey-600">
+                  <p className="text-sm text-gray-600">
                     paste your flight booking links to automatically extract all the details
                   </p>
                 </div>
                 
-                <div className="p-4 bg-grey-50 rounded-lg">
+                <div className="p-4 bg-gray-50 rounded-lg">
                   <h4 className="mb-1">book lodging</h4>
-                  <p className="text-sm text-grey-600">
+                  <p className="text-sm text-gray-600">
                     add hotel and accommodation bookings to track your stay
                   </p>
                 </div>
                 
-                <div className="p-4 bg-grey-50 rounded-lg">
+                <div className="p-4 bg-gray-50 rounded-lg">
                   <h4 className="mb-1">invite travelers</h4>
-                  <p className="text-sm text-grey-600">
+                  <p className="text-sm text-gray-600">
                     add your travel companions to keep everyone organized
                   </p>
                 </div>
