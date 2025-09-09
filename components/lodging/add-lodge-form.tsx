@@ -12,14 +12,12 @@ interface AddLodgeFormProps {
 
 export function AddLodgeForm({ tripId }: AddLodgeFormProps) {
   const [link, setLink] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const addLodgeMutation = useAddLodge();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!link.trim()) return;
+    if (!link.trim() || addLodgeMutation.isPending) return;
 
-    setIsSubmitting(true);
     try {
       await addLodgeMutation.mutateAsync({
         link: link.trim(),
@@ -28,8 +26,6 @@ export function AddLodgeForm({ tripId }: AddLodgeFormProps) {
       setLink('');
     } catch (error) {
       console.error('Failed to add lodge:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -64,10 +60,10 @@ export function AddLodgeForm({ tripId }: AddLodgeFormProps) {
           
           <Button 
             type="submit" 
-            disabled={isSubmitting || !link.trim()}
+            disabled={addLodgeMutation.isPending || !link.trim()}
             className="w-full"
           >
-            {isSubmitting ? 'Adding Lodging...' : 'Add Lodging'}
+            {addLodgeMutation.isPending ? 'Adding Lodging...' : 'Add Lodging'}
           </Button>
         </form>
       </CardContent>

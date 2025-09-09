@@ -12,14 +12,12 @@ interface AddFlightFormProps {
 
 export function AddFlightForm({ tripId }: AddFlightFormProps) {
   const [link, setLink] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const addFlightMutation = useAddFlight();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!link.trim()) return;
+    if (!link.trim() || addFlightMutation.isPending) return;
 
-    setIsSubmitting(true);
     try {
       await addFlightMutation.mutateAsync({
         link: link.trim(),
@@ -28,8 +26,6 @@ export function AddFlightForm({ tripId }: AddFlightFormProps) {
       setLink('');
     } catch (error) {
       console.error('Failed to add flight:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -64,10 +60,10 @@ export function AddFlightForm({ tripId }: AddFlightFormProps) {
           
           <Button 
             type="submit" 
-            disabled={isSubmitting || !link.trim()}
+            disabled={addFlightMutation.isPending || !link.trim()}
             className="w-full"
           >
-            {isSubmitting ? 'Adding Flight...' : 'Add Flight'}
+            {addFlightMutation.isPending ? 'Adding Flight...' : 'Add Flight'}
           </Button>
         </form>
       </CardContent>

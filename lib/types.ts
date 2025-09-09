@@ -13,6 +13,7 @@ export interface TripPreview {
   id: string;
   title: string;
   people_count: number;
+  role?: 'host' | 'member';
 }
 
 export interface FlightSegment {

@@ -81,8 +81,22 @@ class ApiClient {
         throw new Error('User not authenticated');
       }
 
-      // Use backend API to get trips by host_id
-      return this.request<TripsResponse>(`/api/trips/host/${user.id}`);
+      // Get both hosted trips and member trips
+      const [hostedTrips, memberTrips] = await Promise.all([
+        this.request<TripsResponse>(`/api/trips/host/${user.id}`),
+        this.request<TripsResponse>(`/api/trips/member/${user.id}`)
+      ]);
+
+      // Combine trips and mark them as hosted or member
+      const allTrips = [
+        ...hostedTrips.trips.map(trip => ({ ...trip, role: 'host' as const })),
+        ...memberTrips.trips.map(trip => ({ ...trip, role: 'member' as const }))
+      ];
+
+      return {
+        status: 'success',
+        trips: allTrips
+      };
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : 'Failed to fetch trips');
     }
@@ -92,6 +106,12 @@ class ApiClient {
     return this.request('/api/trips', {
       method: 'POST',
       body: JSON.stringify(data),
+    });
+  }
+
+  async deleteTrip(tripId: string, hostId: string): Promise<{ status: string; message: string }> {
+    return this.request(`/api/trips/${tripId}?host_id=${hostId}`, {
+      method: 'DELETE'
     });
   }
 

@@ -67,11 +67,13 @@ export function TripCosts({ tripId }: TripCostsProps) {
     fetchCosts();
   }, [tripId]);
 
-  const formatCurrency = (amount: number, currency: string) => {
+  const formatCurrency = (amount: number | null | undefined, currency: string | null | undefined) => {
+    const safeAmount = amount || 0;
+    const safeCurrency = currency || 'usd';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: currency.toUpperCase(),
-    }).format(amount);
+      currency: safeCurrency.toUpperCase(),
+    }).format(safeAmount);
   };
 
   if (loading) {
@@ -152,10 +154,12 @@ export function TripCosts({ tripId }: TripCostsProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {flight_details.map((flight) => (
-                <div key={flight.id} className="flex items-center justify-between p-3 border rounded-lg">
+              {flight_details.map((flight, index) => (
+                <div key={flight.id || `flight-${index}`} className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
-                    <p className="font-medium">Flight {flight.id.slice(-8)}</p>
+                    <p className="font-medium">
+                      Flight {flight.id ? flight.id.slice(-8) : `#${index + 1}`}
+                    </p>
                     <p className="text-sm text-gray-500">Flight booking</p>
                   </div>
                   <div className="text-right">
@@ -178,10 +182,12 @@ export function TripCosts({ tripId }: TripCostsProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {accommodation_details.map((accommodation) => (
-                <div key={accommodation.id} className="flex items-center justify-between p-3 border rounded-lg">
+              {accommodation_details.map((accommodation, index) => (
+                <div key={accommodation.id || `accommodation-${index}`} className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
-                    <p className="font-medium">{accommodation.name || `Accommodation ${accommodation.id.slice(-8)}`}</p>
+                    <p className="font-medium">
+                      {accommodation.name || `Accommodation ${accommodation.id ? accommodation.id.slice(-8) : `#${index + 1}`}`}
+                    </p>
                     <p className="text-sm text-gray-500">Lodging booking</p>
                   </div>
                   <div className="text-right">

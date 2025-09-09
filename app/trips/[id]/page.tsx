@@ -7,7 +7,6 @@ import { LodgeCard } from '@/components/lodging/lodge-card';
 import { PeopleList } from '@/components/people/people-list';
 import { AddFlightForm } from '@/components/flights/add-flight-form';
 import { AddLodgeForm } from '@/components/lodging/add-lodge-form';
-import { AddPersonForm } from '@/components/people/add-person-form';
 import { SimpleHeader } from '@/components/layout/simple-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +15,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { formatDate } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 // New components for conditional rendering
 import { TripAccessControl } from '@/components/trips/trip-access-control';
@@ -89,6 +89,14 @@ export default function TripDetailPage() {
       <div className="p-8 max-w-4xl mx-auto">
         {/* Trip Header */}
         <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Link href="/trips">
+              <Button variant="default" size="sm" className="flex items-center gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Back to Trips
+              </Button>
+            </Link>
+          </div>
           <h1 className="text-3xl font-bold mb-2">{trip.title}</h1>
           <p className="text-gray-600">
             Created on {formatDate(trip.created_at)}
@@ -104,12 +112,13 @@ export default function TripDetailPage() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="flights">Flights</TabsTrigger>
             <TabsTrigger value="lodging">Lodging</TabsTrigger>
             <TabsTrigger value="people">People</TabsTrigger>
             <TabsTrigger value="costs">Costs</TabsTrigger>
+            <TabsTrigger value="controls">Actions</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -180,8 +189,8 @@ export default function TripDetailPage() {
                   )}
                 </div>
                 
-                {/* Add Flight Form - Only for members */}
-                {membership?.is_member && (
+                {/* Add Flight Form - Only for hosts */}
+                {membership?.is_host && (
                   <>
                     <Separator className="my-6" />
                     <div>
@@ -214,8 +223,8 @@ export default function TripDetailPage() {
                   )}
                 </div>
                 
-                {/* Add Lodge Form - Only for members */}
-                {membership?.is_member && (
+                {/* Add Lodge Form - Only for hosts */}
+                {membership?.is_host && (
                   <>
                     <Separator className="my-6" />
                     <div>
@@ -251,16 +260,6 @@ export default function TripDetailPage() {
                   )}
                 </div>
                 
-                {/* Add Person Form - Only for members */}
-                {membership?.is_member && (
-                  <>
-                    <Separator className="mb-6" />
-                    <div>
-                      <h3 className="mb-4">Add Traveler</h3>
-                      <AddPersonForm tripId={tripId} />
-                    </div>
-                  </>
-                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -276,17 +275,31 @@ export default function TripDetailPage() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Controls Tab */}
+          <TabsContent value="controls" className="space-y-6">
+            {/* Host Controls - Only for hosts */}
+            {membership?.is_host && (
+              <HostControls tripId={tripId} />
+            )}
+
+            {/* Member Controls - Only for members */}
+            {membership?.is_member && !membership?.is_host && (
+              <MemberControls tripId={tripId} />
+            )}
+
+            {/* No access message */}
+            {!membership?.is_host && !membership?.is_member && (
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <p className="text-gray-600">
+                    You need to be a member of this trip to access controls.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
         </Tabs>
-
-        {/* Host Controls - Only for hosts */}
-        {membership?.is_host && (
-          <HostControls tripId={tripId} />
-        )}
-
-        {/* Member Controls - Only for members */}
-        {membership?.is_member && !membership?.is_host && (
-          <MemberControls tripId={tripId} />
-        )}
       </div>
     </div>
   );

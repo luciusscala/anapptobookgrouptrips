@@ -57,7 +57,7 @@ function PaymentFormInner({ tripId, userId, onSuccess, onError }: {
   const stripe = useStripe();
   const elements = useElements();
   const [billingName, setBillingName] = useState('');
-  const { joinWithPayment, isLoading, error } = usePaymentOperations();
+  const { joinWithPayment, isLoading } = usePaymentOperations();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,13 +150,7 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
 
   // Use custom hooks for payment operations
   const {
-    setupPayments,
-    joinWithPayment,
-    checkVirtualCard,
-    removeParticipant,
-    isLoading: paymentLoading,
-    error: paymentError,
-    clearError
+    setupPayments
   } = usePaymentOperations();
 
   const loadPaymentInfo = useCallback(async () => {
@@ -224,7 +218,8 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
       }
     } catch (error) {
       console.error('Failed to remove participant:', error);
-      alert('Failed to remove participant. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to remove participant. Please try again.';
+      alert(errorMessage);
     } finally {
       setRemovingParticipant(null);
     }
@@ -244,7 +239,8 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
         setShowSetupForm(false);
         alert('Payment configuration already exists and has been updated.');
       } else {
-        alert('Failed to setup payments. Please try again.');
+        const errorMessage = error instanceof Error ? error.message : 'Failed to setup payments. Please try again.';
+        alert(errorMessage);
       }
     }
   };
@@ -392,7 +388,7 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
           
           {/* Debug refresh button */}
           <div className="mt-4">
-            <Button onClick={loadPaymentInfo} variant="outline" size="sm">
+            <Button onClick={loadPaymentInfo} variant="default" size="sm">
               Refresh Payment Info
             </Button>
           </div>
@@ -500,11 +496,13 @@ export function SimpleTripPayments({ tripId, userId, isHost }: SimpleTripPayment
                       variant="default"
                       size="sm"
                       onClick={() => handleRemoveParticipant(participant.profile_id)}
-                      disabled={removingParticipant === participant.profile_id}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 bg-red-50 border-red-200"
+                      disabled={removingParticipant === participant.profile_id || participant.profile_id === userId}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 bg-red-50 border-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {removingParticipant === participant.profile_id ? (
                         <Clock className="h-4 w-4 animate-spin" />
+                      ) : participant.profile_id === userId ? (
+                        <span className="text-xs">Host</span>
                       ) : (
                         <UserMinus className="h-4 w-4" />
                       )}
